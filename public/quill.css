@@ -1,0 +1,67 @@
+/* quill编辑器汉化，代码来源：https://blog.csdn.net/weixin_44781409/article/details/94588408 */
+.edit_container,
+.quill-editor {
+    height: 300px;
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item::before {
+    content: '字体大小';
+}
+
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="small"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="small"]::before {
+    content: '小号';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="large"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="large"]::before {
+    content: '中号';
+}
+.ql-snow .ql-picker.ql-size .ql-picker-label[data-value="huge"]::before,
+.ql-snow .ql-picker.ql-size .ql-picker-item[data-value="huge"]::before {
+    content: '大号';
+}
+
+.ql-snow .ql-tooltip[data-mode=link]::before {
+    content: '请输入链接：';
+}
+.ql-snow .ql-tooltip.ql-editing a.ql-action::after {
+    content: '保存';
+}
+.ql-snow .ql-tooltip::before {
+    content: '访问链接：';
+}
+.ql-snow .ql-tooltip a.ql-action::after {
+    content: '编辑';
+}
+.ql-snow .ql-tooltip a.ql-remove::before {
+    content: '移除';
+}
+
+/* 适应表单 */
+.quill {
+    height: 500px !important;
+}
+.quill_container_formstyle.quill_container {
+    padding-top: 10px;
+    margin-left: -35px !important;
+    margin-right: -35px !important;
+    width: calc(100% + 35px * 2);
+}
+.quill_container .el-form-item__content {
+    display: unset;
+}
+
+/* 图片尺寸适应 */
+:deep(.ql-editor) img {
+    width: 100%;
+    max-width: 100% !important;
+}
+
+/* 适应展示 */
+.ql-container.ql-snow {
+    border: none !important;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    font-size: 110%;
+}
