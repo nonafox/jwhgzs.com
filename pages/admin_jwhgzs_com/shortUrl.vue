@@ -42,7 +42,8 @@
         titles: [
             ['local://admin', '后台管理'],
             ['', '短链接管理']
-        ]
+        ],
+        mustLogin: true
     })
     
     // -- refs

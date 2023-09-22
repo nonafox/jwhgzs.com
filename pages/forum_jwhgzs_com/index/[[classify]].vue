@@ -26,18 +26,20 @@
 
 <template>
     <div class="box box_ml hcenter">
-        <span class="box_title">论坛</span>
+        <span class="box_title">{{ $t('page_title_forum') }}</span>
         <el-divider></el-divider>
         <div class="group">
             <div class="group_btns">
                 <el-button type="primary" size="large" class="btns" @click="gotoNew" plain>
-                    <i class="fas fa-upload"></i>&emsp;发布话题
+                    <i class="fas fa-upload"></i>&emsp;{{ $t('new_forum_topic') }}
                 </el-button>
             </div>
         </div>
         <el-divider></el-divider>
         <div style="margin-bottom: 15px;">
-            <el-check-tag v-for="(v, k) in forumData.classifies" :key="k" class="btns2" :checked="classifyChecked == k" @change="classifyChanged(k)">{{ v }}</el-check-tag>
+            <el-check-tag v-for="(v, k) in forumData.classifies" :key="k" class="btns2" :checked="classifyChecked == k" @change="classifyChanged(k)">
+                {{ $t(v) }}
+            </el-check-tag>
         </div>
         <div>
             <div v-for="(v, k) in topicList" :key="v.id" class="topic_item">
@@ -66,8 +68,8 @@
     let config = useState('config')
     definePageMeta({
         titles: [
-            ['local://forum', '论坛'],
-            ['', '主页']
+            ['local://forum', 'page_title_forum'],
+            ['', 'page_title_home']
         ]
     })
     
@@ -93,15 +95,15 @@
     }
     
     await runThread(async () => await p({
-        name: '数据同步',
+        name: $t('api_sync_data'),
         url: u('local://api/forum'),
         data: { classify: (getRouteParam('classify') ? parseInt(getRouteParam('classify')) : 0) },
         on_ok(data) {
             forumData.value = data.data.forumData
             topicList.value = data.data.topicList
         },
-        on_err: () => '即将返回主页~',
-        jump_err: () => j(u('local://forum')),
+        on_err: () => $t('ready2jump_home'),
+        jump_err: () => j(u('local://www')),
         type: 'loop'
     }))
 </script>

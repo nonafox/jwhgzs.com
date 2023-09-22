@@ -5,14 +5,14 @@
         <el-divider></el-divider>
         <el-form :model="formData" :rules="formVerify" label-position="top">
             <div v-if="pageType != 1">
-                <el-form-item label="用户名" prop="name">
+                <el-form-item :label="$t('form_username')" prop="name">
                     <el-input type="text" v-model="formData.name">
                         <template #prefix>
                             <i class="fas fa-user"></i>
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="密码" prop="pass">
+                <el-form-item :label="$t('form_password')" prop="pass">
                     <el-input type="password" :show-password="true" v-model="formData.pass">
                         <template #prefix>
                             <i class="fas fa-key"></i>
@@ -21,7 +21,7 @@
                 </el-form-item>
             </div>
             <div v-if="pageType == 2">
-                <el-form-item label="确认密码" prop="pass2">
+                <el-form-item :label="$t('form_password_repeat')" prop="pass2">
                     <el-input type="password" :show-password="true" v-model="formData.pass2">
                         <template #prefix>
                             <i class="fas fa-key"></i>
@@ -30,36 +30,36 @@
                 </el-form-item>
             </div>
             <div v-if="pageType == 1 || pageType == 2">
-                <el-form-item label="手机号" prop="phone">
-                    <el-input type="number" style="margin-top: 5px margin-bottom: 5px" v-model="formData.phone">
+                <el-form-item :label="$t('form_phone_number')" prop="phone">
+                    <el-input type="number" style="margin-top: 5px; margin-bottom: 5px;" v-model="formData.phone">
                         <template #prefix>
                             <i class="fas fa-phone"></i>
                         </template>
                     </el-input>
                 </el-form-item>
-                <el-form-item label="手机验证码" prop="phoneVerify">
+                <el-form-item :label="$t('form_phone_verify_code')" prop="phoneVerify">
                     <el-input type="number" v-model="formData.phoneVerify">
                         <template #prefix>
                             <i class="fas fa-ticket-alt"></i>
                         </template>
                         <template #append>
                             <el-button text bg style="font-size: 80%" @click="sendPhoneVerify">
-                                发送
+                                {{ $t('send') }}
                             </el-button>
                         </template>
                     </el-input>
                 </el-form-item>
             </div>
-            <div class="box_tip">提示：忘记用户名/密码了可以用手机号登录哦！</div>
+            <div class="box_tip">{{ $t('forget_password_tip') }}</div>
             <div style="margin-top: 60px">
                 <el-button type="primary" :text="pageType != 0" size="large" round @click="doit(0, pageType == 0)">
-                    {{ pageType == 0 ? '立即登录' : '账号密码登录' }}
+                    {{ pageType == 0 ? $t('login_now') : $t('login_by_password') }}
                 </el-button>
                 <el-button type="primary" :text="pageType != 1" size="large" round @click="doit(1, pageType == 1)">
-                    {{ pageType == 1 ? '立即登录' : '手机号登录' }}
+                    {{ pageType == 1 ? $t('login_now') : $t('login_by_phone_number') }}
                 </el-button>
                 <el-button type="primary" :text="pageType != 2" size="large" round @click="doit(2, pageType == 2)">
-                    {{ pageType == 2 ? '立即注册' : '注册' }}
+                    {{ pageType == 2 ? $t('register_now') : $t('register') }}
                 </el-button>
             </div>
         </el-form>
@@ -71,14 +71,15 @@
     let config = useState('config')
     definePageMeta({
         titles: [
-            ['local://user', '用户中心'],
-            ['', '登录注册']
+            ['local://user', 'page_title_ucenter'],
+            ['', 'page_title_ucenter_login']
         ],
         isLoginPage: true
     })
     
     // -- refs
-    let pageType = ref(0),
+    let fromMainDomain = ! getUrlParam('out'),
+        pageType = ref(0),
         pageTitle = ref('登录'),
         grayTitle = ref('LOGIN'),
         isSentFirstPhoneVerify = ref(false),
@@ -86,47 +87,47 @@
             name: [
                 {
                     required: true,
-                    message: '请输入用户名',
+                    message: $t('please_input') + ' ' + $t('_username'),
                     trigger: 'blur'
                 },
                 {
                     min: config.value.USERINF_LENGTH['name_min'],
                     max: config.value.USERINF_LENGTH['name_max'],
-                    message: '用户名长度必须在' + config.value.USERINF_LENGTH.name_min + '~' + config.value.USERINF_LENGTH.name_max + '之间哦~',
+                    message: $t('length_of_username_must_be') + ' ' + config.value.USERINF_LENGTH.name_min + '~' + config.value.USERINF_LENGTH.name_max,
                     trigger: 'blur'
                 }
             ],
             pass: [
                 {
                     required: true,
-                    message: '请输入密码',
+                    message: $t('please_input') + ' ' + $t('_password'),
                     trigger: 'blur'
                 },
                 {
                     min: config.value.USERINF_LENGTH['pass_min'],
                     max: config.value.USERINF_LENGTH['pass_max'],
-                    message: '密码长度必须在' + config.value.USERINF_LENGTH.pass_min + '~' + config.value.USERINF_LENGTH.pass_max + '之间哦~',
+                    message: $t('length_of_password_must_be') + ' ' + config.value.USERINF_LENGTH.pass_min + '~' + config.value.USERINF_LENGTH.pass_max,
                     trigger: 'blur'
                 }
             ],
             pass2: [
                 {
                     required: true,
-                    message: '请重复输入密码',
+                    message: $t('please_input_repeat') + ' ' + $t('_password'),
                     trigger: 'blur'
                 }
             ],
             phone: [
                 {
                     required: true,
-                    message: '请输入手机号',
+                    message: $t('please_input') + ' ' + $t('_phone_number'),
                     trigger: 'blur'
                 }
             ],
             phoneVerify: [
                 {
                     required: true,
-                    message: '请输入手机验证码',
+                    message: $t('please_input') + ' ' + $t('_phone_verify_code'),
                     trigger: 'blur'
                 }
             ]
@@ -144,7 +145,7 @@
         function go() {
             vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.phoneVerify, (vaptchaData) => {
                 p({
-                    name: '发送手机验证码',
+                    name: $t('api_send_phone_verify_code'),
                     url: u('local://api/user/phoneVerifySend'),
                     data: Object.assign({}, formData.value, vaptchaData),
                     on_ok() {
@@ -155,7 +156,7 @@
         }
         if (isSentFirstPhoneVerify.value) {
             confMsg({
-                content: '你刚刚已经发送过一次手机验证码了哦，确定要再次发送嘛？每天你只能发送一定量的手机验证码哦~',
+                content: $t('question_confirm_to_send_phone_verify_code'),
                 type: 'warning',
                 callback_ok: go
             })
@@ -167,9 +168,14 @@
         let jumpIt = () => {
             var defaultu = u('local://www')
             var ori = getUrlParam('from')
-            j(ori ? ori : defaultu)
+            if (fromMainDomain) {
+                j(ori ? ori : defaultu)
+            }
+            else {
+                ori += '?userToken=' + getCookie('userToken')
+                j(ori)
+            }
         }
-        let next = function() {}
         switch (type) {
             case 0:
                 if (! isPost) {
@@ -178,13 +184,13 @@
                 }
                 vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.login, (vaptchaData) => {
                     p({
-                        name: '登录',
+                        name: $t('api_login'),
                         url: u('local://api/user/login'),
                         data: Object.assign({}, formData.value, vaptchaData),
                         jump: jumpIt,
                         on_ok(res) {
                             setCookie('userToken', res.data.userToken)
-                            return '即将跳转~'
+                            return $t('ready2jump_general')
                         }
                     })
                 })
@@ -196,13 +202,13 @@
                 }
                 vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.phoneLogin, (vaptchaData) => {
                     p({
-                        name: '手机号登录',
+                        name: $t('api_login_by_phone_number'),
                         url: u('local://api/user/phoneLogin'),
                         data: Object.assign({}, formData.value, vaptchaData),
                         jump: jumpIt,
                         on_ok(res) {
                             setCookie('userToken', res.data.userToken)
-                            return '即将跳转~'
+                            return $t('ready2jump_general')
                         }
                     })
                 })
@@ -213,21 +219,21 @@
                     break
                 }
                 if (formData.value.pass != formData.value.pass2) {
-                    errMsg('两次输入的密码不一致哦~')
+                    errMsg($t('wrongly_repeat_tip'))
                     return
                 }
                 confMsg({
-                    content: '真的要注册嘛？<br/><strong>如果是老朋友了，忘记了旧帐号的账号密码，请务必不要换手机号重新注册，可以用手机号登录再改密码、或者联系站长哦！</strong><br/>如果是新朋友那就愉快地点下确定吧~',
+                    content: $t('register_tip'),
                     type: 'warning',
                     callback_ok: () => {
                         vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.signup, (vaptchaData) => {
                             p({
-                                name: '注册',
+                                name: $t('api_register'),
                                 url: u('local://api/user/signup'),
                                 data: Object.assign(formData.value, vaptchaData),
                                 jump: () => j(u('local://user/login'), '', true),
                                 on_ok(res) {
-                                    return '即将跳转登录~'
+                                    return $t('ready2jump_login')
                                 }
                             })
                         })
@@ -254,7 +260,7 @@
         case 'signup':
             pageType.value = 2
             pageTitle.value = '注册'
-            grayTitle.value = 'SIGNUP'
+            grayTitle.value = 'REGISTER'
             break
         default:
             break

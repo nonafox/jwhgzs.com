@@ -1,20 +1,3 @@
-if (! process.client) {
-    let fetch
-    let {
-        Blob,
-        blobFrom,
-        blobFromSync,
-        File,
-        fileFrom,
-        fileFromSync,
-        FormData,
-        Headers,
-        Request,
-        Response
-    } = fetch = import('node-fetch')
-}
-
-/* try to use some awesome grammar ~~~ */
 export const u = (dir) => {
     if (! dir) return null
     
@@ -90,7 +73,7 @@ export const j = (url = null, target = '', retainUrlParams = false) => {
     
     const route = useRoute(),
           router = useRouter()
-    if (! url) url = route.fullPath
+    if (! url) window.location.reload()
     
     let urlp
     if (retainUrlParams) {
@@ -145,21 +128,20 @@ export const p = (opts) => {
         // - 'money' (alert when process and error. take the name because money is not always necessary !)
         let {
             url, name, data = {}, file = null, type = '',
-            out = false, on_ok = () => {}, on_err = () => {},
+            on_ok = () => {}, on_err = () => {},
             jump = () => {}, jump_err = () => {}
         } = opts
         let client = process.client, lmsgID
         if (client && type != 'loop') {
             lmsgID = loadingMsg(
                 `
-                    <strong>${name}</strong>
-                    <span>请求中……</span>
+                    <strong>${name} ${$t('_pending')}...</strong>
                 `,
                 0
             )
         }
         // F**KING CONGUATULATION !!! 4 days !!! just because this !!! this was in the if-block on this line
-        // i thought it was because get/setCookie() and i rewrite it immediatly (at the beginning, get/setCookie() actually had a ploblem)
+        // i thought it was because get/setCookFie() and i rewrite it immediatly (at the beginning, get/setCookie() actually had a ploblem)
         // i just wanted to solve the ploblem that userToken cookie cant pass to the post-body
         // i fixed get/setCookie(), but there is some strange detail which still make the cookie ploblem
         // after i fully solved it, the pass cookie (to the post-body) ploblem was still existed !!
@@ -173,8 +155,8 @@ export const p = (opts) => {
             if (type != 'loop' && type != 'money') {
                 succMsg(
                     `
-                        <strong>${name}</strong>
-                        <span>成功！</span>
+                        <strong>${name} ${$t('_succeeded')} !</strong>
+                        <br/><br/>
                         <div>${tip_ok}</div>
                     `,
                     () => jump && jump()
@@ -191,10 +173,10 @@ export const p = (opts) => {
             let tip_err = on_err(msg) || '\n'
             errMsg(
                 `
-                    <span>${name}处理失败：</span>
+                    <strong>${name} ${$t('_failed')} :</strong>
                     <br/>
-                    <strong>${msg}</strong>
-                    <br/>
+                    <span>${msg}</span>
+                    <br/><br/>
                     <span>${tip_err}</span>
                 `,
                 () => {
@@ -239,7 +221,7 @@ export const p = (opts) => {
                 xhr.onload = () => {
                     try {
                         let res = JSON.parse(xhr.responseText)
-                        if (out || res.status)
+                        if (res.status)
                             ok(res)
                         else
                             err(res.msg)
@@ -256,7 +238,7 @@ export const p = (opts) => {
                 })
                 res = res.data.value
                 
-                if (out || res.status)
+                if (res.status)
                     ok(res)
                 else
                     err(res.msg)
@@ -281,10 +263,10 @@ export const runThread = async (func) => {
     loop()
 }
 export const getCookie = (name) => {
-    return useCookie(name, { domain: useState('config').value.JSCOOKIE_MAINDOMAIN, path: '/' }).value
+    return useCookie(name).value
 }
-export const setCookie = (name, value) => {
-    useCookie(name, { domain: useState('config').value.JSCOOKIE_MAINDOMAIN, path: '/' }).value = value
+export const setCookie = (name, value, out = false) => {
+    useCookie(name, out ? { path: '/' } : { domain: useState('config').value.JSCOOKIE_MAINDOMAIN, path: '/' }).value = value
 }
 export const random = (a, b) => {
     // 代码来源：https://www.runoob.com/w3cnote/js-random.html
@@ -328,7 +310,7 @@ export const copy = (text) => {
     if (! process.client) return
     
     copyIt(text)
-    succMsg('复制成功！')
+    succMsg($t('copy_finished'))
 }
 globalThis.copy = copy
 export const sizeDesc = (size) => {
@@ -399,11 +381,11 @@ export const getDateDesc = (time) => {
     cd = fill0(cdate.getDate())
     if (y == cy && m == cm) {
         if (d == cd)
-            return '今天'
+            return $t('_today')
         else if (d == cd - 1)
-            return '昨天'
+            return $t('_yesterday')
         else if (d == cd + 1)
-            return '明天'
+            return $t('_tomorrow')
     }
     return dateText
 }
@@ -433,7 +415,7 @@ export const infoMsg = (content, callback) => {
         canClose: true,
         canCancel: false,
         scene: 'info',
-        title: '提示',
+        title: $t('notice'),
         content: content,
         callback_ok: callback,
         callback_cancel: callback
@@ -447,7 +429,7 @@ export const succMsg = (content, callback) => {
         canClose: true,
         canCancel: false,
         scene: 'success',
-        title: '成功',
+        title: $t('success'),
         content: content,
         callback_ok: callback,
         callback_cancel: callback
@@ -461,7 +443,7 @@ export const warnMsg = (content, callback) => {
         canClose: true,
         canCancel: false,
         scene: 'warning',
-        title: '警告',
+        title: $t('warning'),
         content: content,
         callback_ok: callback,
         callback_cancel: callback
@@ -475,7 +457,7 @@ export const errMsg = (content, callback) => {
         canClose: true,
         canCancel: false,
         scene: 'danger',
-        title: '失败',
+        title: $t('failed'),
         content: content,
         callback_ok: callback,
         callback_cancel: callback
@@ -483,15 +465,15 @@ export const errMsg = (content, callback) => {
 }
 export const confMsg = (json) => {
     if (! process.client) return
-    // { content, type, callback_ok, callback_cancel, canClose = true }
+    // 'json' like: { content, type, callback_ok, callback_cancel, canClose = true }
     if (! json.canClose && json.canClose !== false) json.canClose = true
     return useState('dialogs').value.push({
         status: true,
         _status: true,
         canClose: json.canClose,
         canCancel: json.canClose,
-        scene: json.type,
-        title: '确认',
+        scene: json.type || 'warning',
+        title: $t('confirm'),
         content: json.content,
         callback_ok: json.callback_ok,
         callback_cancel: json.callback_cancel
@@ -499,7 +481,7 @@ export const confMsg = (json) => {
 }
 export const inputMsg = (json) => {
     if (! process.client) return
-    // { content, inputType, callback_ok, callback_cancel, canClose = true, defaultValue = null, inputOptions = null }
+    // 'json' like: { content, inputType, callback_ok, callback_cancel, canClose = true, defaultValue = null, inputOptions = null }
     if (! json.canClose && json.canClose !== false) json.canClose = true
     return useState('dialogs').value.push({
         status: true,
@@ -507,11 +489,42 @@ export const inputMsg = (json) => {
         canClose: json.canClose,
         canCancel: json.canClose,
         scene: 'input',
-        title: '输入',
-        content: json.content,
-        inputType: json.inputType,
-        value: json.defaultValue,
-        options: json.inputOptions,
+        title: $t('input'),
+        form: [
+            {
+                title: json.content,
+                type: json.inputType,
+                value: json.defaultValue,
+                options: json.inputOptions,
+            }
+        ],
+        callback_ok: json.callback_ok,
+        callback_cancel: json.callback_cancel
+    }) - 1
+}
+export const formMsg = (json) => {
+    if (! process.client) return
+    // 'json' like: { content, callback_ok, callback_cancel, canClose = true, form: ... }
+    // 'form' like: [{ content, inputType, defaultValue = null, inputOptions = null }, ...]
+    if (! json.canClose && json.canClose !== false) json.canClose = true
+    let form = []
+    for (let k in json.form) {
+        let v = json.form[k]
+        form.push({
+            title: v.content,
+            type: v.inputType,
+            value: v.defaultValue || '',
+            options: v.inputOptions
+        })
+    }
+    return useState('dialogs').value.push({
+        status: true,
+        _status: true,
+        canClose: json.canClose,
+        canCancel: json.canClose,
+        scene: 'input',
+        title: $t('input'),
+        form: form,
         callback_ok: json.callback_ok,
         callback_cancel: json.callback_cancel
     }) - 1
@@ -525,25 +538,34 @@ export const loadingMsg = (content, defaultPercent = 0) => {
         canCancel: false,
         hideOK: true,
         scene: 'loading',
-        title: '加载中',
-        content: content,
-        inputType: 'loading',
-        value: defaultPercent
+        title: $t('loading'),
+        form: [
+            {
+                title: content,
+                type: 'loading',
+                value: defaultPercent
+            }
+        ]
     }) - 1
 }
 export const closeMsg = (id, type) => {
     if (! process.client) return
-    let dialogs = useState('dialogs').value
-    if (type == 0) {
-        if (dialogs[id].callback_cancel) {
-            dialogs[id].callback_cancel(dialogs[id].value)
-        }
-    } else if (type == 1) {
-        if (dialogs[id].callback_ok) {
-            dialogs[id].callback_ok(dialogs[id].value)
+    let dialog = useState('dialogs').value[id]
+    let values = []
+    if (dialog.form) {
+        for (let k in dialog.form) {
+            let v = dialog.form[k]
+            values.push(v.value)
         }
     }
-    dialogs[id].status = false
+    if (values.length == 1)
+        values = values[0]
+    
+    if (type == 0 && dialog.callback_cancel)
+        dialog.callback_cancel(values)
+    else if (type == 1 && dialog.callback_ok)
+        dialog.callback_ok(values)
+    dialog.status = false
 }
 export const closeLoadingMsg = (id) => {
     if (! process.client) return
@@ -555,7 +577,7 @@ export const editLoadingMsg_title = (id, title) => {
 }
 export const editLoadingMsg_percent = (id, percent) => {
     if (! process.client) return
-    try { useState('dialogs').value[id].value = Number(percent.toFixed(0)) } catch (ex) {}
+    try { useState('dialogs').value[id].form[0].value = Number(percent.toFixed(0)) } catch (ex) {}
 }
 export const selectFile = (callback) => {
     if (! process.client) return
@@ -568,7 +590,7 @@ export const selectFile = (callback) => {
         input.value = ''
         let sizeLimit = useState('config').value.UPLOAD_SIZELIMIT
         if (data.size > sizeLimit) {
-            errMsg('你选择的文件太大了哦~（大小限制：' + sizeDesc(sizeLimit) + '）')
+            errMsg($t('file_upload_size_limit_tip', { size: sizeDesc(sizeLimit) }))
             return
         }
         if (callback) callback(data)
@@ -581,7 +603,7 @@ export const vaptchaGo = (scene, callback_ok, callback_close, callback_loaded) =
         return
     }
     
-    let loadingId = loadingMsg('验证码加载中……', -1)
+    let loadingId = loadingMsg($t('loading_vaptcha'), - 1)
     let vaptchaObj
     vaptcha({
         vid: useState('config').value.VAPTCHA_CONFIG.vid,
@@ -615,17 +637,16 @@ export const vaptchaGo = (scene, callback_ok, callback_close, callback_loaded) =
 }
 export const jumpReload = () => {
     if (! process.client) return
-    
-    j(useRoute().fullPath)
+    else j()
 }
 export const jumpLogin = () => {
     if (! process.client) return
     
-    j(u('local://user/login') + '?from=' + encodeURIComponent(document.location.href))
+    j(u('local://user/login') + '?from=' + encodeURIComponent(document.location.href) + (useRoute().meta.isntMainDomain ? '&out=1' : ''))
 }
 export const logout = () => {
     confMsg({
-        content: '确定要退出登录咩？',
+        content: $t('logout_confirm'),
         type: 'warning',
         callback_ok() {
             setCookie('userToken', '')
@@ -688,66 +709,46 @@ export const getDialogInputVerb = (type) => {
         case 'textarea':
         case 'password':
         case 'number':
-            return '输入'
+            return $t('_input')
         case 'select':
         case 'date':
         case 'datetime':
-            return '选择'
+            return $t('_select')
         default:
-            return '输入'
+            return $t('_input')
     }
 }
 export const torture = (json) => {
     let { isEdit, oldData, list, next } = json
+    // 'list' like: { name, vname, type, note, appendConf }
+    let form = []
+    for (let k in list) {
+        let v = list[k]
+        let formatter = v.defaultValueFormatter || ((a) => a)
+        form.push(Object.assign({
+            content: v.name + ' : ' + (v.note || ''),
+            inputType: v.type,
+            defaultValue: isEdit ? formatDialogInput(v.type, formatter(oldData[v.vname])) : undefined
+        }, v.appendConf))
+    }
     let newData = {}
-    let doAdd = (k = 0) => {
-        let v = list[k]
-        if (! v) {
+    formMsg({
+        form: form,
+        callback_ok(values) {
+            let diff = false
+            if (! Array.isArray(values))
+                values = [values]
+            for (let k in values) {
+                let v = values[k], rk = list[k].vname
+                newData[rk] = formatDialogInput(list[k].type, v)
+                if (isEdit && oldData[rk] != newData[rk])
+                    diff = true
+            }
+            if (isEdit && ! diff) {
+                infoMsg($t('nothing_changed_tip'))
+                return
+            }
             next(newData)
-            return
         }
-        inputMsg(Object.assign({
-            content: '请' + getDialogInputVerb(v.type) + v.name + '：' + (v.note || ''),
-            inputType: v.type,
-            callback_ok(val) {
-                newData[v.vname] = formatDialogInput(v.type, val)
-                k ++
-                doAdd(k)
-            }
-        }, v.appendConf || {}))
-    }
-    let doEdit = (k = 0) => {
-        let v = list[k]
-        if (! v) {
-            let different = false
-            for (let kk in list) {
-                let vv = list[kk]
-                if (oldData[vv.vname] != newData[vv.vname]) {
-                    different = true
-                    break
-                }
-            }
-            if (! different) {
-                infoMsg('什么都没有变哦~')
-            }
-            else {
-                next(newData)
-            }
-            return
-        }
-        inputMsg(Object.assign({
-            content: '请' + getDialogInputVerb(v.type) + v.name + '：' + (v.note || ''),
-            inputType: v.type,
-            defaultValue: formatDialogInput(v.type, oldData[v.vname]),
-            callback_ok(val) {
-                newData[v.vname] = formatDialogInput(v.type, val)
-                k ++
-                doEdit(k)
-            }
-        }, v.appendConf || {}))
-    }
-    if (isEdit)
-        doEdit()
-    else
-        doAdd()
+    })
 }

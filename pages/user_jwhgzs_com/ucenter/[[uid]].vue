@@ -72,8 +72,10 @@
                         </el-row>
                         <div v-if="ucdata.isMe || ucdata.selfIntroduce" class="selfintroduce">
                             <span v-if="ucdata.selfIntroduce">{{ ucdata.selfIntroduce }}</span>
-                            <span v-if="! ucdata.selfIntroduce" style="color: gray">还没有个性签名哦~</span>
-                            <el-button v-if="ucenterOwnerIsMe" @click="setUdata('selfIntroduce', '个性签名', 'textarea', ucdata.selfIntroduce)" style="margin-left: 10px" circle>
+                            <span v-if="! ucdata.selfIntroduce" style="color: gray">
+                                {{ $t('no_bio_tip') }}
+                            </span>
+                            <el-button v-if="ucenterOwnerIsMe" @click="setUdata('selfIntroduce', $t('_bio'), 'textarea', ucdata.selfIntroduce)" style="margin-left: 10px" circle>
                                 <i class="fas fa-edit"></i>
                             </el-button>
                         </div>
@@ -94,7 +96,7 @@
         </el-col>
         <el-col :md="12">
             <div class="box">
-                <div class="box_title">个人信息</div>
+                <div class="box_title">{{ $t('personal_info') }}</div>
                 <el-skeleton style="margin-top: 20px" :loading="! ucdata" :rows="6" animated>
                     <template #default>
                         <el-descriptions style="margin-top: 20px" :column="1" direction="vertical" border>
@@ -102,7 +104,7 @@
                                 <template #label>
                                     <i class="fas fa-id-badge"></i>
                                     &nbsp;
-                                    账号ID
+                                    {{ $t('form_user_id') }}
                                 </template>
                                 {{ ucdata.id }}
                             </el-descriptions-item>
@@ -110,15 +112,17 @@
                                 <template #label>
                                     <i class="fas fa-signal"></i>
                                     &nbsp;
-                                    在线状态
+                                    {{ $t('form_online_status') }}
                                 </template>
-                                <component :is="ucdata.isOnline ? 'el-tag' : 'div'" :type="ucdata.isOnline ? 'success' : 'info'">{{ ucdata.isOnline ? '在线' : '最后在线时间：' + getTimeDesc(ucdata.lastOnlineTime) }}</component>
+                                <component :is="ucdata.isOnline ? 'el-tag' : 'div'" :type="ucdata.isOnline ? 'success' : 'info'">
+                                    {{ ucdata.isOnline ? $t('online') : $t('form_last_online_time') + getTimeDesc(ucdata.lastOnlineTime) }}
+                                </component>
                             </el-descriptions-item>
                             <el-descriptions-item>
                                 <template #label>
                                     <i class="fas fa-phone"></i>
                                     &nbsp;
-                                    手机号
+                                    {{ $t('form_phone_number') }}
                                 </template>
                                 {{ ucdata.phone }}
                             </el-descriptions-item>
@@ -126,14 +130,14 @@
                                 <template #label>
                                     <i class="fas fa-user-plus"></i>
                                     &nbsp;
-                                    注册信息
+                                    {{ $t('form_register_info') }}
                                 </template>
                                 <div>
-                                    <span class="stitle">注册时间</span>
+                                    <span class="stitle">{{ $t('form_register_time') }}</span>
                                     {{ getTimeDesc(ucdata.signupTime) }}
                                 </div>
                                 <div>
-                                    <span class="stitle">注册IP</span>
+                                    <span class="stitle">{{ $t('form_register_ip') }}</span>
                                     {{ ucdata.signupIP }}
                                 </div>
                             </el-descriptions-item>
@@ -142,25 +146,35 @@
                 </el-skeleton>
             </div>
             <div v-if="ucenterOwnerIsMe" class="box" style="margin-top: 20px">
-                <div class="box_title">账号安全</div>
-                <div class="box_graytitle">安全设置</div>
+                <div class="box_title">{{ $t('account_safety') }}</div>
+                <div class="box_graytitle">{{ $t('account_safety_settings') }}</div>
                 <div class="group">
-                    <el-button type="primary" size="large" @click="setUdata('pass', '密码', 'password')" plain>
-                        <i class="fas fa-key"></i>&emsp;修改密码
+                    <el-button type="primary" size="large" @click="setUdata('pass', $t('_password'), 'password')" plain>
+                        <i class="fas fa-key"></i>&emsp;{{ $t('change_password') }}
                     </el-button>
                 </div>
-                <div class="box_graytitle">最近登录记录</div>
+                <div class="box_graytitle">{{ $t('recent_login_records') }}</div>
                 <el-table :data="ucdata.loginDetails" :stripe="true" style="margin-top: 20px" max-height="300px">
                     <!-- TNND，被坑两天了，这个el-table-column不能用单标签形式，所以尾部不能用 `/>` 必须用 `></el-table-column>` -->
                     <el-table-column prop="id" label="ID"></el-table-column>
-                    <el-table-column prop="loginTime" label="登录时间" width="200"></el-table-column>
-                    <el-table-column prop="loginIP" label="登录IP" width="150"></el-table-column>
-                    <el-table-column prop="onlineTime" label="最后在线时间" width="200"></el-table-column>
-                    <el-table-column prop="todo" label="操作/说明" min-width="150">
+                    <el-table-column prop="" :label="$t('form_login_time')" width="200">
                         <template #default="scope">
-                            <el-button v-if="scope.row.tokenActive && (! scope.row.isMe)" type="warning" size="small" @click="dieUserToken(scope.row.id)" plain>强制退出登录</el-button>
-                            <span v-if="! scope.row.tokenActive">凭证已过期</span>
-                            <span v-if="scope.row.isMe">这是当前设备哦</span>
+                            {{ getTimeDesc(scope.row.loginTime) }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="loginIP" :label="$t('form_login_ip')" width="150"></el-table-column>
+                    <el-table-column prop="" :label="$t('form_last_online_time')" width="200">
+                        <template #default="scope">
+                            {{ scope.row.onlineTime ? getTimeDesc(scope.row.onlineTime) : $t('online') }}
+                        </template>
+                    </el-table-column>
+                    <el-table-column prop="" :label="$t('form_operate_or_info')" min-width="150">
+                        <template #default="scope">
+                            <el-button v-if="scope.row.tokenActive && (! scope.row.isMe)" type="warning" size="small" @click="dieUserToken(scope.row.id)" plain>
+                                {{ $t('force_logout') }}
+                            </el-button>
+                            <span v-if="! scope.row.tokenActive">{{ $t('token_isnt_active_tip') }}</span>
+                            <span v-if="scope.row.isMe">{{ $t('is_this_device_tip') }}</span>
                         </template>
                     </el-table-column>
                 </el-table>
@@ -174,10 +188,11 @@
     let config = useState('config')
     definePageMeta({
         titles: [
-            ['local://user', '用户中心'],
-            ['', '个人中心']
+            ['local://user', 'page_title_ucenter'],
+            ['', 'page_title_ucenter_my']
         ],
-        isUcenterPage: true
+        isUcenterPage: true,
+        mustLogin: true
     })
     
     // -- refs
@@ -190,34 +205,34 @@
         selectFile((data) => {
             vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
                 p({
-                    name: '上传头像',
+                    name: $t('api_upload_avatar'),
                     url: u('local://api/user/avatarUpload'),
                     data: vaptchaData,
                     file: data,
-                    succText: '稍等一秒新头像就生效啦~'
+                    succText: $t('wait_for_1s_tip')
                 })
             })
         })
     }
     function setUdata_doit(key, desc, value) {
         p({
-            name: '设置个人信息（' + desc + '）',
+            name: $t('api_edit_user_info'),
             url: u('local://api/user/setUdata'),
             data: { key: key, value: value }
         })
     }
     function setUdata(key, desc, inputType, defaultValue) {
         inputMsg({
-            content: '请输入新的' + desc + '~',
+            content: $t('please_input_new') + ' ' + desc + ' :',
             inputType: inputType,
             callback_ok(value) {
                 if (inputType == 'password') {
                     inputMsg({
-                        content: '请重复输入新的' + desc + '，不然设置错了很麻烦哦~',
+                        content: $t('please_input_repeat') + ' ' + desc + ' :',
                         inputType: inputType,
                         callback_ok(value2) {
                             if (value !== value2) {
-                                errMsg('两次输入的' + desc + '不一致呢~')
+                                errMsg($t('wrongly_repeat_tip'))
                                 return
                             }
                             setUdata_doit(key, desc, value)
@@ -225,8 +240,8 @@
                     })
                     return
                 }
-                if (ucdata[key].value === value) {
-                    infoMsg('……这不跟之前的一样嘛~')
+                if (ucdata.value[key] === value) {
+                    infoMsg($t('nothing_changed_tip'))
                     return
                 }
                 setUdata_doit(key, desc, value)
@@ -236,12 +251,12 @@
     }
     function dieUserToken(id) {
         confMsg({
-            content: '确定要将该设备强制退出登录吗？',
+            content: $t('question_confirm_to_force_logout'),
             type: 'warning',
             callback_ok: () => {
                 vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
                     p({
-                        name: '强制设备退出登录',
+                        name: $t('api_force_logout'),
                         url: u('local://api/user/userTokenDie'),
                         data: Object.assign({ id: id }, vaptchaData)
                     })
@@ -250,16 +265,18 @@
         })
     }
     
-    await runThread(async () => await p({
-        name: '数据同步',
-        url: u('local://api/user/data'),
-        data: { uid: pageOwner.value },
-        on_ok(res) {
-            ucdata.value = res.data.userData
-            ucenterOwnerIsMe.value = ucdata.value.isMe
-        },
-        on_err: () => '即将返回主页',
-        jump_err: () => j(u('local://www')),
-        type: 'loop'
-    }))
+    if (process.client) {
+        await runThread(async () => await p({
+            name: $t('api_sync_data'),
+            url: u('local://api/user/data'),
+            data: { uid: pageOwner.value },
+            on_ok(res) {
+                ucdata.value = res.data.userData
+                ucenterOwnerIsMe.value = ucdata.value.isMe
+            },
+            on_err: () => $t('ready2jump_home'),
+            jump_err: () => j(u('local://www')),
+            type: 'loop'
+        }))
+    }
 </script>

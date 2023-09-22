@@ -27,7 +27,7 @@
                 </span>
                 <template v-for="(v, k) in udata.userTags[1]">
                     <el-tag v-if="k < 2" style="margin-left: 5px;" type="success" size="small">
-                        {{ v }}
+                        {{ $t(v) }}
                     </el-tag>
                 </template>
             </custom-a>

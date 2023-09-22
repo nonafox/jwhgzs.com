@@ -18,7 +18,7 @@
     <span class="imgAwesome avater-container"
             :style="{ width: a + 'px', height: a + 'px', 'background-color': err ? 'gray' : 'white' }">
         <el-image v-show="! err" class="avatar" :src="src" loading="lazy"
-            :style="{ width: a + 'px', height: a + 'px' }" @error="err = true"></el-image>
+            :style="{ width: a + 'px', height: a + 'px' }" @error="err = true" fit="cover"></el-image>
         <i v-show="err" class="fas fa-user erricon" :style="{ 'font-size': a / 42 * 16 + 'px' }"></i>
     </span>
 </template>

@@ -21,6 +21,7 @@
         titles: [
             ['local://admin', '后台管理'],
             ['', '主页']
-        ]
+        ],
+        mustLogin: true
     })
 </script>

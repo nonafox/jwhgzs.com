@@ -45,12 +45,12 @@
 
 <template>
     <div class="box box_ml hcenter">
-        <span class="box_title">论坛</span>
-        <span class="box_graytitle">话题详情</span>
+        <span class="box_title">{{ $t('page_title_forum') }}</span>
+        <span class="box_graytitle">{{ $t('page_title_forum_topic_detail') }}</span>
         <el-divider></el-divider>
         <div class="group">
             <el-button type="primary" size="large" @click="gotoReply" plain>
-                <i class="fas fa-comments"></i>&emsp;发言
+                <i class="fas fa-comments"></i>&emsp;{{ $t('reply_forum_topic') }}
             </el-button>
         </div>
         <el-divider></el-divider>
@@ -67,10 +67,10 @@
                             <i class="fas fa-thumbs-up"></i>&nbsp;{{ v.likes }}
                         </el-link>
                         <el-link v-show="isAdmin" class="topic_item_btn" @click="editIt(v.id)">
-                            <i class="fas fa-edit"></i>&nbsp;编辑
+                            <i class="fas fa-edit"></i>&nbsp;{{ $t('edit') }}
                         </el-link>
                         <el-link v-show="isAdmin" class="topic_item_btn" type="danger" @click="deleteIt(v.id)">
-                            <i class="fas fa-trash-alt"></i>&nbsp;删除
+                            <i class="fas fa-trash-alt"></i>&nbsp;{{ $t('delete') }}
                         </el-link>
                     </span>
                     <div :class="{ topic_item: true, topic_item_nonreply: (k == 0) }">
@@ -93,8 +93,8 @@
     let config = useState('config')
     definePageMeta({
         titles: [
-            ['local://forum', '论坛'],
-            ['', '详情']
+            ['local://forum', 'page_title_forum'],
+            ['', 'detail']
         ]
     })
     
@@ -109,7 +109,7 @@
     // -- app
     function like(id) {
         p({
-            name: '点赞/取消点赞',
+            name: $t('api_like_or_cancel'),
             url: u('local://api/forum/like'),
             data: { id: id }
         })
@@ -122,12 +122,12 @@
     }
     function deleteIt(id) {
         confMsg({
-            content: '确定要删除嘛？',
+            content: $t('question_confirm_to_delete'),
             type: 'warning',
             callback_ok() {
                 vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
                     p({
-                        name: '删除话题',
+                        name: $t('api_delete_forum_topic'),
                         url: u('local://api/forum/delete'),
                         data: Object.assign({ id: id }, vaptchaData),
                         jump_err: () => id == topicTree.value[0].id && j(u('local://forum'))
@@ -138,14 +138,14 @@
     }
         
     await runThread(async () => await p({
-        name: '数据同步',
+        name: $t('api_sync_data'),
         url: u('local://api/forum/detail'),
         data: { id: getRouteParam('id') ? parseInt(getRouteParam('id')) : 0 },
         on_ok(res) {
             topicTree.value = res.data.topicTree
             forumData.value = res.data.forumData
         },
-        on_err: () => '即将返回主页',
+        on_err: () => $t('ready2jump_home'),
         jump_err: () => j(u('local://forum')),
         type: 'loop'
     }))

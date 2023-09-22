@@ -1,8 +1,8 @@
 <script setup>
     definePageMeta({
         titles: [
-            ['local://user', '用户中心'],
-            ['', '主页']
+            ['local://user', 'page_title_ucenter'],
+            ['', 'page_title_home']
         ]
     })
     

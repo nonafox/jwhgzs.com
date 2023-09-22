@@ -120,13 +120,13 @@
                     </el-link>
                 </el-tag>
             </template>
-            <template v-show="isAdmin">
+            <div v-show="isAdmin">
                 <br/>
                 <!-- 注意v-for这样（(v, k) in num）用，v值从1开始，k值从0开始 -->
                 <el-button v-for="(v, k) in 4" size="small" :type="getPropColor(- 1 + k) || 'primary'" @click="addProp(- 1 + k)">
                     <i class="fas fa-plus-circle"></i>&nbsp;添加{{ getPropName(- 1 + k) }}
                 </el-button>
-            </template>
+            </div>
         </div>
     </div>
 </template>

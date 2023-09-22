@@ -11,7 +11,7 @@
         font-size: 170%;
         color: white;
         text-align: center;
-        word-break: break-all;
+        word-break: break-word;
     }
     .para {
         font-size: unset !important;
@@ -33,13 +33,12 @@
 
 <template>
     <div class="box hcenter text">
-        本域名为稀有的 .su 苏联国别域名。
+        <strong style="white-space: pre-wrap;">{{ $t('su_introduce') }}</strong>
         <div class="sub">
-            感谢注册商
+            {{ $t('su_thanks') }}
             <el-link type="primary" @click="j(u('sponsors://regery'), '_blank')">
                 <img :src="u('static://public/img/sponsor_regery')" alt="Regery logo" class="logolink_bigger"/>
             </el-link>
-            ！
         </div>
     </div>
     <div class="box hcenter text para">
@@ -64,8 +63,8 @@
 <script setup>
     definePageMeta({
         titles: [
-            ['shortUrl://', '短链接'],
-            ['', '主页']
+            ['shortUrl://', 'page_title_shorturl'],
+            ['', 'page_title_home']
         ],
         bgImg: 'static://public/img/bkg2',
         isntMainDomain: true
@@ -74,7 +73,7 @@
     let tag = getRouteParam('tag')
     if (process.client && tag) {
         p({
-            name: '短链接跳转',
+            name: $t('api_jump_shorturl'),
             url: u('local://api/shortUrl'),
             data: { tag: tag },
             on_ok(data) {

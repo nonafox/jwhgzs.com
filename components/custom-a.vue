@@ -4,5 +4,5 @@
 
 <script setup>
     let props = defineProps(['href', 'target'])
-    const triggerJump = () => j(props.href, props.target)
+    const triggerJump = () => props.href && j(props.href, props.target)
 </script>

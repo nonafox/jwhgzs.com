@@ -1,14 +1,20 @@
 <template>
     <div class="box box_md hcenter">
-        <span class="box_title">论坛</span>
-        <span class="box_graytitle">{{ (! formData.pid) ? '发布话题' : (formData.id ? '编辑话题' : '话题发言') }}</span>
+        <span class="box_title">{{ $t('page_title_forum') }}</span>
+        <span class="box_graytitle">
+            {{ (! formData.pid) ? $t('new_forum_topic') : (formData.id ? $t('edit_forum_topic') : $t('reply_forum_topic')) }}
+        </span>
         <div style="margin-top: 40px;">
             <div class="box_tip2">
-                <span class="spanAwesome" style="padding-bottom: 5px;">提示：你输入的内容实时保存哦，不用担心！</span>
-                <el-button size="small" plain @click="clear">清空表单</el-button>
+                <span v-if="isOK2save" class="spanAwesome" style="padding-bottom: 5px; padding-right: 5px;">
+                    {{ $t('forum_form_content_saved_tip') }}
+                </span>
+                <el-button size="small" plain @click="clear">
+                    {{ $t('clear_saved_content') }}
+                </el-button>
             </div>
             <el-form label-width="8rem" :model="formData" label-position="top">
-                <el-form-item v-if="formData.pid && (! formData.id)" label="回复话题ID" prop="pid">
+                <el-form-item v-if="formData.pid && (! formData.id)" :label="$t('form_forum_topic_id_to_reply')" prop="pid">
                     <el-input type="number" v-model="formData.pid" disabled>
                         <template #prefix>
                             <i class="fas fa-list-ol"></i>
@@ -16,7 +22,7 @@
                     </el-input>
                 </el-form-item>
                 <div v-if="formData.id">
-                    <el-form-item label="话题ID" prop="id">
+                    <el-form-item :label="$t('form_forum_topic_id')" prop="id">
                         <el-input type="number" v-model="formData.id" disabled>
                             <template #prefix>
                                 <i class="fas fa-list-ol"></i>
@@ -24,12 +30,12 @@
                         </el-input>
                     </el-form-item>
                 </div>
-                <el-form-item v-if="! formData.pid" label="分类" prop="classify">
-                    <el-select v-model="formData.classify" placeholder=" 点击选择分类" @change="saveContent">
-                        <el-option v-for="(v, k) in forumData.classifies" :key="k" :label="v" :value="k"></el-option>
+                <el-form-item v-if="! formData.pid" :label="$t('form_forum_topic_classify')" prop="classify">
+                    <el-select v-model="formData.classify" @change="saveContent">
+                        <el-option v-for="(v, k) in forumData.classifies" :key="k" :label="$t(v)" :value="k"></el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item v-if="! formData.pid" label="标题" prop="title">
+                <el-form-item v-if="! formData.pid" :label="$t('form_forum_topic_title')" prop="title">
                     <el-input type="text" v-model="formData.title" @input="saveContent">
                         <template #prefix>
                             <i class="fas fa-heading"></i>
@@ -38,15 +44,15 @@
                 </el-form-item>
                 <el-form-item label="" prop="">
                     <client-only>
-                        <quill-container title="内容" :form-style="true">
-                            <quill v-model="formData.content" title="内容" @input="saveContent"></quill>
+                        <quill-container :title="$t('form_forum_topic_content')" :form-style="true">
+                            <quill v-model="formData.content" @input="saveContent"></quill>
                         </quill-container>
                     </client-only>
                 </el-form-item>
                 <el-divider style="margin-top: 60px;"></el-divider>
                 <div style="width: 100%; text-align: center;">
                     <el-button type="primary" size="large" style="width: 50%;" @click="doit" plain round>
-                        提交
+                        {{ $t('submit') }}
                     </el-button>
                 </div>
             </el-form>
@@ -59,9 +65,10 @@
     let config = useState('config')
     definePageMeta({
         titles: [
-            ['local://forum', '论坛'],
-            ['', '发布']
-        ]
+            ['local://forum', 'page_title_forum'],
+            ['', 'page_title_publish']
+        ],
+        mustLogin: true
     })
     
     // -- refs
@@ -74,6 +81,9 @@
             content: ''
         }),
         inited = false
+    let isOK2save = computed(() => {
+        return ! (formData.value.pid || formData.value.id)
+    })
     
     // -- app
     function init() {
@@ -86,7 +96,7 @@
         }
         if (formData.value.id) {
             p({
-                name: '初始化数据',
+                name: $t('api_init_data'),
                 url: u('local://api/forum/detail'),
                 data: { id: formData.value.id },
                 on_ok(data) {
@@ -96,13 +106,13 @@
                     formData.value.title = d.title
                     formData.value.content = d.content
                 },
-                on_err: () => '本错误非致命，你可以继续进行操作~',
+                on_err: () => $t('unimportant_error_tip'),
                 type: 'money'
             })
         }
     }
     function saveContent() {
-        if (! (formData.value.pid || formData.value.id)) {
+        if (isOK2save.value) {
             localStorage.setItem('forum_form', JSON.stringify(formData.value))
         }
     }
@@ -111,11 +121,11 @@
     }
     function clear() {
         confMsg({
-            content: '确定要清空已输入的表单内容吗？',
+            content: $t('question_confirm_to_clear_saved_content'),
             type: 'warning',
             callback_ok() {
                 _clear()
-                jumpReload()
+                succMsg($t('succeeded'))
             }
         })
     }
@@ -130,12 +140,12 @@
         }
         vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
             p({
-                name: '发布话题',
+                name: $t('api_new_forum_topic'),
                 url: u('local://api/forum/upload'),
                 data: Object.assign(formData.value, vaptchaData),
                 on_ok(data) {
                     _clear()
-                    return '即将跳转~'
+                    return $t('ready2jump_general')
                 },
                 jump: jump
             })
@@ -157,7 +167,7 @@
     }
     
     await runThread(async () => await p({
-        name: '数据同步',
+        name: $t('api_sync_data'),
         url: u('local://api/forum'),
         data: {},
         on_ok(data) {
@@ -166,7 +176,7 @@
                 init()
         },
         jump_err: () => j(u('local://forum')),
-        on_err: () => '即将返回主页~',
+        on_err: () => $t('ready2jump_home'),
         type: 'loop'
     }))
 </script>

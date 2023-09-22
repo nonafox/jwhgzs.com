@@ -42,13 +42,13 @@
             </template>
         </el-skeleton>
         <el-divider></el-divider>
-        <div class="box_title">子站导航</div>
+        <div class="box_title">{{ $t('subsite_navigation') }}</div>
         <br/>
-        <custom-a :href="u('local://xnzx')">
-            <img class="link" alt="新宁空间 banner" :src="u('static://public/img/link_xnzx')"/>
-        </custom-a>
         <custom-a :href="u('local://forum')">
             <img class="link" alt="论坛 banner" :src="u('static://public/img/link_forum')"/>
+        </custom-a>
+        <custom-a :href="u('local://xnzx')">
+            <img class="link" alt="新宁空间 banner" :src="u('static://public/img/link_xnzx')"/>
         </custom-a>
         <custom-a :href="u('local://admin')">
             <img class="link" alt="后台管理 banner" :src="u('static://public/img/link_admin')"/>
@@ -70,8 +70,8 @@
            (i thought this is because the config json fetching hasnt done at that time !)
            */
         titles: [
-            ['local://www', '主站'],
-            ['', '主页']
+            ['local://www', 'page_title_main'],
+            ['', 'page_title_home']
         ]
     })
     
@@ -84,7 +84,7 @@
     }
     
     await runThread(async () => await p({
-        name: '数据同步',
+        name: $t('api_sync_data'),
         url: u('local://api/www'),
         on_ok(res) {
             carouselList.value = res.data.carouselList

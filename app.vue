@@ -7,7 +7,7 @@
         z-index: 99;
         opacity: 97%;
         box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-        background-color: #FFF;
+        background-color: white;
         white-space: nowrap;
     }
     .mainnav {
@@ -23,18 +23,21 @@
         padding: 0 20px;
         line-height: 35px;
     }
+    .logo_banner_wrapper {
+        display: inline-flex;
+        height: 54px;
+        align-items: center;
+    }
     .logo_banner {
-        /* 强制居中 45px+5px+5px=55px */
-        padding-top: 5px;
         height: 45px;
-        padding-bottom: 5px;
     }
     .nav_userinfo {
         position: absolute;
         top: 0;
         right: 15px;
-        line-height: 55px;
+        line-height: 54px;
         font-size: 80%;
+        background-color: white;
     }
     .nav_userinfo_name {
         margin-left: 10px;
@@ -83,64 +86,61 @@
     .tail_link {
         margin-left: 15px;
     }
+    .locale_select {
+        width: 7rem;
+        height: 54px;
+    }
 </style>
 
 <template>
-    <el-config-provider :locale="locale">
-        <div id="loading" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; background-color: #409EFF; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-            <div style="color: white; font-size: 200%;">加载中</div>
-            <div style="color: white;">loading</div>
+    <el-config-provider :locale="locale == 'cn' ? localeConf : null">
+        <div id="loading" style="position: absolute; left: 0; top: 0; width: 100%; height: 100%; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div style="color: #409EFF; font-size: 240%; font-weight: bold;">{{ $t('loading') }}...</div>
         </div>
         <div id="page" class="bkg" :style="{ display: loading ? 'none' : 'block', 'background-image': 'url(' + (u($route.meta.bgImg) || u('static://public/img/bkg')) + ')' }">
             <div id="header">
                 <div id="nav" class="nav">
-                    <div id="mainnav" class="mainnav">
-                        <custom-a :href="u('local://www')">
-                            <img :src="u('static://public/img/logo_banner')" alt="九尾狐logo" class="logo_banner"/>
+                    <div id="mainnav" class="mainnav imgAwesome">
+                        <custom-a :href="u($route.meta.logo_link || 'local://www')" class="logo_banner_wrapper">
+                            <img :src="u($route.meta.logo_img || 'static://public/img/logo_banner')" alt="logo" class="logo_banner"/>
                         </custom-a>
+                        <el-select v-model="locale" size="small" class="locale_select" @change="changeLocale">
+                            <el-option label="Chinese" value="cn"></el-option>
+                            <el-option label="English" value="en"></el-option>
+                        </el-select>
+                    </div>
+                    <div v-if="udata" class="nav_userinfo">
+                        <user-avatar :udata="udata"></user-avatar>
+                        <span :class="{ nav_userinfo_name: true, authed_uname: (udata.userGroup || udata.userAuth) }">{{ udata.name }}</span>
                     </div>
                     <div id="subnav" class="subnav">
-                        <div v-if="udata" class="nav_userinfo">
-                            <user-avatar :udata="udata"></user-avatar>
-                            <span :class="{ nav_userinfo_name: true, authed_uname: (udata.userGroup || udata.userAuth) }">{{ udata.name }}</span>
-                        </div>
                         <el-breadcrumb class="nav_breadcrumb">
-                            <!-- 这里最后一项自动加的css是elementplus自己给的 -->
-                            <el-breadcrumb-item v-for="v in $route.meta.titles">
-                                <custom-a :href="u(v[0])">
-                                    {{ v[1] }}
+                            <!-- 这里最后一项自动加的 css 是 elementplus 自己给的 -->
+                            <el-breadcrumb-item v-for="(v, k) in $route.meta.titles">
+                                <custom-a :href="k < $route.meta.titles.length - 1 ? u(v[0]) : ''">
+                                    {{ $t(v[1]) }}
                                 </custom-a>
                             </el-breadcrumb-item>
                         </el-breadcrumb>
                         <el-menu class="nav_menu" mode="horizontal" :ellipsis="false">
-                            <template v-if="isMainDomain">
-                                <el-menu-item v-if="! getCookie('userToken')" index="1">
-                                    <el-button :disabled="$route.meta.isLoginPage" text @click="jumpLogin">
-                                        <i class="fas fa-sign-in-alt"></i>
-                                        <span class="nav_a_span">登录 / 注册</span>
-                                    </el-button>
-                                </el-menu-item>
-                                <el-menu-item v-if="userToken" index="2">
-                                    <el-button :disabled="$route.meta.isUcenterPage ? ucenterOwnerIsMe : false" text @click="j(u('local://user/ucenter'))">
-                                        <i class="fas fa-user"></i>
-                                        <span class="nav_a_span">我的</span>
-                                    </el-button>
-                                </el-menu-item>
-                                <el-menu-item v-if="userToken" index="3">
-                                    <el-button text @click="logout" href="javascript:;">
-                                        <i class="fas fa-sign-out-alt"></i>
-                                        <span class="nav_a_span">退出</span>
-                                    </el-button>
-                                </el-menu-item>
-                            </template>
-                            <template v-if="! isMainDomain">
-                                <el-menu-item index="1">
-                                    <el-button text @click="j(u('local://www'))">
-                                        <i class="fas fa-undo"></i>
-                                        <span class="nav_a_span">返回主站</span>
-                                    </el-button>
-                                </el-menu-item>
-                            </template>
+                            <el-menu-item v-if="! getCookie('userToken')" index="1">
+                                <el-button :disabled="$route.meta.isLoginPage" text @click="jumpLogin">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    <span class="nav_a_span">{{ $t('login') }} / {{ $t('register') }}</span>
+                                </el-button>
+                            </el-menu-item>
+                            <el-menu-item v-if="userToken" index="2">
+                                <el-button :disabled="$route.meta.isUcenterPage ? ucenterOwnerIsMe : false" text @click="j(u('local://user/ucenter'))">
+                                    <i class="fas fa-user"></i>
+                                    <span class="nav_a_span">{{ $t('my') }}</span>
+                                </el-button>
+                            </el-menu-item>
+                            <el-menu-item v-if="userToken" index="3">
+                                <el-button text @click="logout" href="javascript:;">
+                                    <i class="fas fa-sign-out-alt"></i>
+                                    <span class="nav_a_span">{{ $t('logout') }}</span>
+                                </el-button>
+                            </el-menu-item>
                         </el-menu>
                     </div>
                 </div>
@@ -175,11 +175,11 @@
                     </div>
                 -->
                 <div>
-                    Copyright &copy; {{ config.INF.year_from }}-{{ config.INF.year_to }} jwhgzs.com 谭镇洋 版权所有
+                    Copyright &copy; {{ config.INF.year_from }}-{{ config.INF.year_to }} 谭镇洋 All rights reserved.
                 </div>
                 <el-divider></el-divider>
                 <div class="tail_div">
-                    联系我们：QQ群：{{ config.CONTACT_INF.qq }}，邮箱：{{ config.CONTACT_INF.email }}
+                    {{ $t('contact') }}: QQ: {{ config.CONTACT_INF.qq }} | E-mail: {{ config.CONTACT_INF.email }}
                 </div>
                 <div class="tail_div">
                     <el-link class="tail_link" :href="u('sponsors://canva')" target="_blank" type="primary">
@@ -224,37 +224,44 @@
                         </div>
                     </template>
                     <template #footer>
-                        <el-button v-if="v.canCancel" type="primary" @click="closeMsg(k, 0)" plain>取消</el-button>
-                        <el-button v-if="! v.hideOK" type="primary" @click="closeMsg(k, 1)">确定</el-button>
+                        <el-button v-if="v.canCancel" type="primary" @click="closeMsg(k, 0)" plain>
+                            {{ $t('cancel') }}
+                        </el-button>
+                        <el-button v-if="! v.hideOK" type="primary" @click="closeMsg(k, 1)">
+                            {{ $t('confirm') }}
+                        </el-button>
                     </template>
                     
                     <div v-html="v.content" style="margin-bottom: 10px"></div>
-                    <template v-if="v.inputType == 'text'">
-                        <el-input v-model="v.value" type="text"></el-input>
-                    </template>
-                    <template v-if="v.inputType == 'textarea'">
-                        <el-input v-model="v.value" type="textarea" :autosize="{ minRows: 3, maxRows: 16 }"></el-input>
-                    </template>
-                    <template v-if="v.inputType == 'number'">
-                        <el-input v-model="v.value" type="number"></el-input>
-                    </template>
-                    <template v-if="v.inputType == 'password'">
-                        <el-input v-model="v.value" type="password" show-password></el-input>
-                    </template>
-                    <template v-if="v.inputType == 'select'">
-                        <el-select v-model="v.value">
-                            <el-option v-for="v2 in v.options" :label="v2.label" :value="v2.value"></el-option>
-                        </el-select>
-                    </template>
-                    <template v-if="v.inputType == 'date'">
-                        <el-date-picker v-model="v.value" type="date" value-format="x"></el-date-picker>
-                    </template>
-                    <template v-if="v.inputType == 'datetime'">
-                        <el-date-picker v-model="v.value" type="datetime" value-format="x"></el-date-picker>
-                    </template>
-                    <template v-if="v.inputType == 'loading'">
-                        <el-progress :percentage="v.value >= 0 ? v.value : 100" :text-inside="true" :stroke-width="20" :indeterminate="v.value < 0" :show-text="v.value >= 0" :duration="1"></el-progress>
-                    </template>
+                    <div v-for="(v2, k2) in v.form" :style="{ 'margin-top': k2 > 0 ? '20px' : '' }">
+                        <div v-html="v2.title" style="margin-bottom: 10px"></div>
+                        <template v-if="v2.type == 'text'">
+                            <el-input v-model="v2.value" type="text"></el-input>
+                        </template>
+                        <template v-if="v2.type == 'textarea'">
+                            <el-input v-model="v2.value" type="textarea" :autosize="{ minRows: 3, maxRows: 16 }"></el-input>
+                        </template>
+                        <template v-if="v2.type == 'number'">
+                            <el-input v-model="v2.value" type="number"></el-input>
+                        </template>
+                        <template v-if="v2.type == 'password'">
+                            <el-input v-model="v2.value" type="password" show-password></el-input>
+                        </template>
+                        <template v-if="v2.type == 'select'">
+                            <el-select v-model="v2.value">
+                                <el-option v-for="v3 in v2.options" :label="v3.label" :value="v3.value"></el-option>
+                            </el-select>
+                        </template>
+                        <template v-if="v2.type == 'date'">
+                            <el-date-picker v-model="v2.value" type="date" value-format="x"></el-date-picker>
+                        </template>
+                        <template v-if="v2.type == 'datetime'">
+                            <el-date-picker v-model="v2.value" type="datetime" value-format="x"></el-date-picker>
+                        </template>
+                        <template v-if="v2.type == 'loading'">
+                            <el-progress :percentage="v2.value >= 0 ? v2.value : 100" :text-inside="true" :stroke-width="20" :indeterminate="v2.value < 0" :show-text="v2.value >= 0" :duration="1"></el-progress>
+                        </template>
+                    </div>
                 </el-dialog>
             </template>
             <input v-show="false" id="fileUploader" type="file"/>
@@ -284,8 +291,11 @@
     let _config = await useFetch(useRuntimeConfig().public.configAPI)
     let config = useState('config', () => _config.data)
     
-    let route = useRoute(),
+    let { t: $t, locale } = useI18n(),
+        route = useRoute(),
         router = useRouter()
+    globalThis.$t = $t
+    locale.value = getCookie('locale') || 'cn'
     // this is a macro function, cant call functions in funcs.ts (nuxt instance is not defined)
     useHead({
         script: [
@@ -299,11 +309,11 @@
             }
         ],
         titleTemplate: () => {
-            let prefix = config.value.INF.title_prefix
+            let prefix = $t('page_title_prefix')
             try {
-                return prefix + route.meta.titles[0][1]
+                return prefix + ' | ' + $t(route.meta.titles[0][1])
             } catch (ex) {
-                return prefix + '？'
+                return prefix + ' | ' + '？'
             }
         },
         meta: [
@@ -331,12 +341,18 @@
     
     // -- refs
     // configure vars
-    const locale = zhCn
+    const localeConf = zhCn
     // whole-app-public vars
     let dialogs = useState('dialogs', () => []),
         udata = useState('udata', () => {}),
         ucenterOwnerIsMe = useState('ucenterOwnerIsMe', () => false),
         loading = ref(true)
+    let userToken = computed(() => {
+        return getCookie('userToken')
+    })
+    let isMainDomain = computed(() => {
+        return ! route.meta.isntMainDomain
+    })
     
     if (process.client)
         loading.value = false
@@ -346,9 +362,6 @@
         content_h = ref(0)
     
     // -- app
-    let userToken = computed(() => {
-        return getCookie('userToken')
-    })
     function autoAdapt() {
         try {
             let window_w, window_h
@@ -366,15 +379,15 @@
         await (async () => {
             if (! getCookie('userToken')) return
             await p({
-                name: '用户数据同步',
+                name: $t('api_sync_user_data'),
                 url: u('local://api/user/data'),
                 on_ok(res) {
                     udata.value = res.data.userData
                 },
                 jump_err: jumpLogin,
                 on_err() {
-                    setCookie('userToken', '')
-                    return '即将跳转登录！'
+                    setCookie('userToken', '', route.meta.isntMainDomain)
+                    return $t('ready2jump_login')
                 },
                 type: 'loop'
             })
@@ -383,18 +396,27 @@
         if (process.client)
             setTimeout(loopThread, config.value.JSTHREAD_INTERVAL)
     }
-    let isMainDomain = computed(() => {
-        return ! route.meta.isntMainDomain
-    })
+    function changeLocale() {
+        setCookie('locale', locale.value, true)
+        j()
+    }
     
     if (process.client) {
         // auto adaption
         window.onresize = autoAdapt
         autoAdapt()
         
+        // login at a non-main domain
+        if (getUrlParam('userToken')) {
+            if (route.meta.isntMainDomain && ! getCookie('userToken')) {
+                setCookie('userToken', getUrlParam('userToken'), true)
+            }
+            j('?')
+        }
+        
         // login verify
         if (! getCookie('userToken') && route.meta.mustLogin) {
-            setCookie('userToken', '')
+            setCookie('userToken', '', route.meta.isntMainDomain)
             jumpLogin()
         }
         

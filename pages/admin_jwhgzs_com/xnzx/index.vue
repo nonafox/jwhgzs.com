@@ -33,7 +33,8 @@
             ['local://admin', '后台管理'],
             ['local://admin/xnzx', '新宁空间管理'],
             ['', '主页']
-        ]
+        ],
+        mustLogin: true
     })
     
     // -- refs
