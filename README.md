@@ -5,4 +5,5 @@ Not specified at all. For that maybe we will update the repository once in a whi
 # Configure notice
 
 - usually be deployed on bt-panel
-- must runs on root user (otherwise, 503 will you get which means thread killed)
+- MUST runs on root user
+- you MUST disable the default action of clearing the `/tmp` directory regularly (e.g. by editing `/usr/lib/tmpfiles.d` in CentOs 7)
