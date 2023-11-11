@@ -14,41 +14,34 @@
                 <el-form label-width="8rem" :model="formData" label-position="top">
                     <div v-if="type == 'upload'">
                         <el-form-item label="周报" prop="id">
-                            <!-- TODO: to hack the bug (element-plus-bug-01) here. remove <client-only></...> when OK -->
-                            <client-only>
-                                <el-select v-model="formData.id" placeholder=" 点击选择周报" @change="resetPeople(0); saveContent()">
-                                    <template #prefix>
-                                        <i class="fas fa-calendar-alt"></i>
-                                    </template>
-                                    <template v-for="(v, k) in weeklyList" :key="k">
-                                        <el-option v-if="! v.finished" :label="genWeeklyTitle(v)" :value="v.id"></el-option>
-                                    </template>
-                                </el-select>
-                            </client-only>
+                            <el-select v-model="formData.id" placeholder=" 点击选择周报" @change="resetPeople(0); saveContent()">
+                                <template #prefix>
+                                    <i class="fas fa-calendar-alt"></i>
+                                </template>
+                                <template v-for="(v, k) in weeklyList" :key="k">
+                                    <el-option v-if="! v.finished" :label="genWeeklyTitle(v)" :value="v.id"></el-option>
+                                </template>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="打稿人（你）" prop="typist">
-                            <client-only>
-                                <el-select v-model="formData.typist" placeholder=" 点击选择打稿人（你）" no-data-text="请先选择周报" @change="resetPeople(0, 1); saveContent()">
-                                    <template #prefix>
-                                        <i class="fas fa-keyboard"></i>
-                                    </template>
-                                    <template v-for="(v, k) in peopleList.typists" :key="k">
-                                        <el-option :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
-                                    </template>
-                                </el-select>
-                            </client-only>
+                            <el-select v-model="formData.typist" placeholder=" 点击选择打稿人（你）" no-data-text="请先选择周报" @change="resetPeople(0, 1); saveContent()">
+                                <template #prefix>
+                                    <i class="fas fa-keyboard"></i>
+                                </template>
+                                <template v-for="(v, k) in peopleList.typists" :key="k">
+                                    <el-option :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
+                                </template>
+                            </el-select>
                         </el-form-item>
                         <el-form-item label="稿件作者" prop="author">
-                            <client-only>
-                                <el-select v-model="formData.author" placeholder=" 点击选择稿件作者" no-data-text="请先选择打稿人" @change="saveContent">
-                                    <template #prefix>
-                                        <i class="fas fa-user-edit"></i>
-                                    </template>
-                                    <template v-for="(v, k) in peopleList.authors" :key="k">
-                                        <el-option v-if="isTypistMatchAuthor(getWeeklyListById(formData.id), formData.typist, v[0])" :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
-                                    </template>
-                                </el-select>
-                            </client-only>
+                            <el-select v-model="formData.author" placeholder=" 点击选择稿件作者" no-data-text="请先选择打稿人" @change="saveContent">
+                                <template #prefix>
+                                    <i class="fas fa-user-edit"></i>
+                                </template>
+                                <template v-for="(v, k) in peopleList.authors" :key="k">
+                                    <el-option v-if="isTypistMatchAuthor(getWeeklyListById(formData.id), formData.typist, v[0])" :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
+                                </template>
+                            </el-select>
                         </el-form-item>
                     </div>
                     <div v-if="type == 'edit'">
@@ -68,15 +61,14 @@
                             </template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="题记（选填）" prop="tiji">
-                        <el-input type="textarea" v-model="formData.tiji" :rows="3" :maxlength="config.XNZX_WEEKLY_CONFIG.tijiMaxLength" show-word-limit @input="saveContent"></el-input>
+                    <el-form-item label="题记（选填，没有就别填！）" prop="tiji">
+                        <el-input type="textarea" v-model="formData.tiji" placeholder="没有就别填！" :rows="3" :maxlength="config.XNZX_WEEKLY_CONFIG.tijiMaxLength" show-word-limit @input="saveContent"></el-input>
                     </el-form-item>
                     <el-form-item label="正文" prop="content">
-                        <span class="box_tip3">如有小标题请在小标题前加上英文井号“#”哦！</span>
-                        <el-input type="textarea" v-model="formData.content" placeholder="如有小标题请在小标题前加上英文井号“#”哦！" :rows="20" :maxlength="config.XNZX_WEEKLY_CONFIG.contentMaxLength" show-word-limit @input="saveContent"></el-input>
+                        <el-input type="textarea" v-model="formData.content" :placeholder="'如有小标题请在小标题前加上英文井号 # 哦！\n注意正文不包括题目和题记、后记！'" :rows="20" :maxlength="config.XNZX_WEEKLY_CONFIG.contentMaxLength" show-word-limit @input="saveContent"></el-input>
                     </el-form-item>
-                    <el-form-item label="后记（选填）" prop="houji">
-                        <el-input type="textarea" v-model="formData.houji" :rows="3" :maxlength="config.XNZX_WEEKLY_CONFIG.houjiMaxLength" show-word-limit @input="saveContent"></el-input>
+                    <el-form-item label="后记（选填，没有就别填！）" prop="houji">
+                        <el-input type="textarea" v-model="formData.houji" placeholder="没有就别填！" :rows="3" :maxlength="config.XNZX_WEEKLY_CONFIG.houjiMaxLength" show-word-limit @input="saveContent"></el-input>
                     </el-form-item>
                     <!--
                     <el-form-item label="图片（选填）" prop="attach">
@@ -106,30 +98,26 @@
                         <el-divider></el-divider>
                     </div>
                     <el-form-item label="届数" prop="year">
-                        <client-only>
-                            <el-select v-model="formData.year" placeholder=" 点击选择届数" @change="resetPeople(1)">
-                                <template #prefix>
-                                    <i class="fas fa-school"></i>
-                                </template>
-                                <template v-for="(v, k) in weeklyData.years" :key="k">
-                                    <el-option :label="v + '秋届'" :value="v"></el-option>
-                                </template>
-                            </el-select>
-                        </client-only>
+                        <el-select v-model="formData.year" placeholder=" 点击选择届数" @change="resetPeople(1)">
+                            <template #prefix>
+                                <i class="fas fa-school"></i>
+                            </template>
+                            <template v-for="(v, k) in weeklyData.years" :key="k">
+                                <el-option :label="v + '秋届'" :value="v"></el-option>
+                            </template>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="班级" prop="class_">
-                        <client-only>
-                            <el-select v-model="formData.class_" placeholder=" 点击选择班级" @change="resetPeople(1)" no-data-text="请先选择届数">
-                                <template #prefix>
-                                    <i class="fas fa-graduation-cap"></i>
+                        <el-select v-model="formData.class_" placeholder=" 点击选择班级" @change="resetPeople(1)" no-data-text="请先选择届数">
+                            <template #prefix>
+                                <i class="fas fa-graduation-cap"></i>
+                            </template>
+                            <template v-if="formData.year">
+                                <template v-for="(v, k) in weeklyData.classes[formData.year]" :key="k">
+                                    <el-option :label="v + '班'" :value="v"></el-option>
                                 </template>
-                                <template v-if="formData.year">
-                                    <template v-for="(v, k) in weeklyData.classes[formData.year]" :key="k">
-                                        <el-option :label="v + '班'" :value="v"></el-option>
-                                    </template>
-                                </template>
-                            </el-select>
-                        </client-only>
+                            </template>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="学期" prop="term">
                         <el-input type="text" v-model="formData.term">
@@ -155,20 +143,18 @@
                     <el-form-item label="人员安排" prop="">
                         <div class="group" style="margin: 0 !important;">
                             <div>
-                                <client-only>
-                                    <el-select v-model="tmpData.author" style="margin-right: 10px;" placeholder=" 点击选择稿件作者" no-data-text="请先选择班级">
-                                        <template #prefix>
-                                            <i class="fas fa-user-edit"></i>
-                                        </template>
-                                        <el-option v-for="(v, k) in allStudents" :key="k" :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
-                                    </el-select>
-                                    <el-select v-model="tmpData.typist" placeholder=" 点击选择打稿人" no-data-text="请先选择班级">
-                                        <template #prefix>
-                                            <i class="fas fa-keyboard"></i>
-                                        </template>
-                                        <el-option v-for="(v, k) in allStudents" :key="k" :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
-                                    </el-select>
-                                </client-only>
+                                <el-select v-model="tmpData.author" style="margin-right: 10px;" placeholder=" 点击选择稿件作者" no-data-text="请先选择班级">
+                                    <template #prefix>
+                                        <i class="fas fa-user-edit"></i>
+                                    </template>
+                                    <el-option v-for="(v, k) in allStudents" :key="k" :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
+                                </el-select>
+                                <el-select v-model="tmpData.typist" placeholder=" 点击选择打稿人" no-data-text="请先选择班级">
+                                    <template #prefix>
+                                        <i class="fas fa-keyboard"></i>
+                                    </template>
+                                    <el-option v-for="(v, k) in allStudents" :key="k" :label="v[0] + '号 ' + v[1]" :value="v[0]"></el-option>
+                                </el-select>
                             </div>
                             <!-- margin-bottom: -10px用来消掉btns设置的尾margin（间margin还是有必要的） -->
                             <div style="margin-top: 10px; margin-bottom: -10px;">
@@ -196,15 +182,13 @@
                         </el-table>
                     </el-form-item>
                     <el-form-item label="是否隐藏作者名" prop="nameInvisible">
-                        <client-only>
-                            <el-select v-model="formData.nameInvisible" placeholder=" 点击选择是否隐藏作者名">
-                                <template #prefix>
-                                    <i class="fas fa-user-secret"></i>
-                                </template>
-                                <el-option label="不隐藏" :value="0"></el-option>
-                                <el-option label="隐藏" :value="1"></el-option>
-                            </el-select>
-                        </client-only>
+                        <el-select v-model="formData.nameInvisible" placeholder=" 点击选择是否隐藏作者名">
+                            <template #prefix>
+                                <i class="fas fa-user-secret"></i>
+                            </template>
+                            <el-option label="不隐藏" :value="0"></el-option>
+                            <el-option label="隐藏" :value="1"></el-option>
+                        </el-select>
                     </el-form-item>
                     <el-divider style="margin-top: 60px;"></el-divider>
                     <div style="width: 100%; text-align: center;">
@@ -436,23 +420,28 @@
                 switch (value) {
                     case 0:
                         inputMsg({
-                            content: '请按照“打稿人#稿件作者”（均为学号）格式填写，一行一个打稿人，多个稿件作者用英文逗号“,”分割~',
+                            content: '格式（A = 打稿人学号，B = 稿件作者学号）：<br/><br/>A B,B,B,...<br/><br/>（注意A、B中间有空格；每个多个稿件作者用英文逗号“,”分割；每行对应一个打稿人学号，即设置完一个打稿人请换行）',
                             inputType: 'textarea',
                             callback_ok(value) {
-                                let rows = (value ? value : '').split('\n'), list = []
-                                for (let k in rows) {
-                                    let v = rows[k]
-                                    if (! v.trim())
-                                        continue
-                                    let arr = v.split('#')
-                                    let typist = parseInt(arr[0]), authors = arr[1].split(',')
-                                    for (let k2 in authors) {
-                                        let author = parseInt(authors[k2])
-                                        list.push([ author, typist ])
+                                try {
+                                    let rows = (value ? value : '').split('\n'), list = []
+                                    for (let k in rows) {
+                                        let v = rows[k]
+                                        if (! v.trim())
+                                            continue
+                                        let arr = v.split(' ')
+                                        let typist = parseInt(arr[0]), authors = arr[1].split(',')
+                                        for (let k2 in authors) {
+                                            let author = parseInt(authors[k2])
+                                            list.push([ author, typist ])
+                                        }
                                     }
+                                    formData.value.people = list
+                                    succMsg('批量添加成功~')
                                 }
-                                formData.value.people = list
-                                succMsg('批量添加成功~')
+                                catch {
+                                    errMsg('批量添加失败！请检查输入格式哦~~')
+                                }
                             }
                         })
                         break

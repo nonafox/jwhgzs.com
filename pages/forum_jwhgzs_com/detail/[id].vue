@@ -94,7 +94,7 @@
     definePageMeta({
         titles: [
             ['local://forum', 'page_title_forum'],
-            ['', 'detail']
+            ['', 'page_title_forum_topic_detail']
         ]
     })
     

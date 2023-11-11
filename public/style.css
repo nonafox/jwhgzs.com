@@ -5,6 +5,10 @@
    --------------------------------------------------------------------------------- */
 body {
     margin: 0 !important;
+    font-family: bahnschrift;
+}
+input {
+    font-family: bahnschrift;
 }
 #app {
     display: unset !important;
@@ -220,7 +224,7 @@ input[type=number] {
 .box {
     /* 嘿嘿，这个shadow阴影我偷的， */
     box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-    border-radius: 15px;
+    border-radius: 8px;
     background-color: white;
     opacity: 93%;
     padding: 35px;

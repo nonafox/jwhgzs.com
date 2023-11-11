@@ -33,7 +33,7 @@ export const parseUrl = (url) => {
     if (typeof url != 'string') return null
     
     let type = 'out', flag, rr
-    /* FU***********K!!! does Chrome crazy??? i console.log(urlp) after this,
+    /* FU***********K!!! is Chrome crazy??? i console.log(urlp) after this,
        when i carefully look at the console, the two echos (one is after this, one is before return)
        are not completely the same: when you unfold the output object (to see the detail), they are 'the same'
        (thats the 'question' i found before, the first one contain props that sholdnt appear in its context
@@ -86,7 +86,7 @@ export const j = (url = null, target = '', retainUrlParams = false) => {
     }
     let { type: jumpType, flag, route: dest } = urlp = parseUrl(url)
     
-    if (jumpType == 'local' && flag != 'hash' && target != '_blank') {
+    if (jumpType == 'local' && flag != 'hash' && target != '_refresh' && target != '_blank') {
         navigateTo(dest.fullPath)
     } else if (flag == 'hash') {
         document.location.hash = ''

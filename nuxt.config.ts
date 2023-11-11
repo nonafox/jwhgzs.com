@@ -1,4 +1,5 @@
-// https://v3.nuxtjs.org/api/configuration/nuxt.config
+const api_base = 'https://api.jwhgzs.com'
+
 export default defineNuxtConfig({
     // custom global components. origin: https://v3.nuxtjs.org/guide/directory-structure/components
     nitro: {
@@ -7,10 +8,19 @@ export default defineNuxtConfig({
     modules: [
         '@element-plus/nuxt',
         '@nuxtjs/i18n',
-        '@vueuse/nuxt'
+        '@vueuse/nuxt',
+        '@nuxtjs/robots'
     ],
     i18n: {
         vueI18n: './i18n.config.ts'
+    },
+    robots: {
+        rules: {
+            UserAgent: '*',
+            Disallow: '/',
+            BlankLine: true,
+            Sitemap: `${api_base}/sitemap`
+        }
     },
     components: {
         global: true,
@@ -18,7 +28,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         'public': {
-            configAPI: 'https://api.jwhgzs.com'
+            configAPI: api_base
         }
     },
     css: [

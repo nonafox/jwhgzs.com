@@ -286,6 +286,7 @@
         isShowPeopleList.value = (! isShowPeopleList.value)
     }
     function editWeekly() {
+        // 用router跳转会出问题 可能是nuxt的bug？
         j(u('local://xnzx/weekly/upload') + '/adminedit-' + pid.value)
     }
     function downloadWeekly() {
