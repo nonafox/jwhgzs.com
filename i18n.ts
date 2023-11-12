@@ -26,6 +26,8 @@ export default `
     my: 个人中心 | My page
     logout: 退出登录 | Log out
     contact: 联系方式 | Contact
+    contact_qq_group: QQ群 | QQ group id
+    contact_email: 邮箱 | Email
     cancel: 取消 | Cancel
     confirm: 确定 | Confirm
     _pending: 处理中 | pending

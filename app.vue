@@ -180,7 +180,7 @@
                     </div>
                     <el-divider></el-divider>
                     <div class="tail_div">
-                        {{ $t('contact') }}: QQ: {{ config.CONTACT_INF.qq }} | E-mail: {{ config.CONTACT_INF.email }}
+                        {{ $t('contact') }}: {{ $t('contact_qq_group') }}: {{ config.CONTACT_INF.qq }} | {{ $t('contact_email') }}: {{ config.CONTACT_INF.email }}
                     </div>
                     <div class="tail_div">
                         <el-link class="tail_link" :href="u('sponsors://canva')" target="_blank" type="primary">
