@@ -373,8 +373,8 @@
             let content_el = document.getElementById('content'),
                 header_h = document.getElementById('header').offsetHeight,
                 tail_h = document.getElementById('tail').offsetHeight
-            let content_h = window_h - header_h - tail_h
-            content_h.value = 'min-height: ' + content_h.toFixed(0) + 'px'
+            let _content_h = window_h - header_h - tail_h
+            content_h.value = _content_h
         } catch (ex) { }
     }
     async function loopThread() {
@@ -406,7 +406,7 @@
     if (process.client) {
         // auto adaption
         window.onresize = autoAdapt
-        autoAdapt()
+        onMounted(autoAdapt)
         
         // login at a non-main domain
         if (getUrlParam('userToken')) {
