@@ -1,5 +1,5 @@
 {
-  "name": "jwhgzscom",
+  "name": "jwhgzs_com",
   "private": true,
   "scripts": {
     "build": "nuxt build",
@@ -22,10 +22,10 @@
     "quill-jwhgzs-edited": "latest",
     "webpack-cli": "^5.1.4"
   },
-  "description": "Look at the [nuxt 3 documentation](https://v3.nuxtjs.org) to learn more.",
+  "description": "jwhgzs.com",
   "version": "1.0.0",
   "main": "index.js",
   "keywords": [],
-  "author": "",
+  "author": "jwhgzs",
   "license": "MIT"
 }

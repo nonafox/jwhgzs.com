@@ -12,7 +12,6 @@ const resolveI18n = () => {
     return res
 }
 
-
 export default defineI18nConfig(() => ({
     legacy: false,
     locale: 'cn',
