@@ -288,6 +288,7 @@
 <script setup>
     /* learn to write English comments now !!! */
     import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
+    if (process.client) globalThis.Quill = (await import('quill-jwhgzs-edited/dist/quill.min.js')).default
     
     // -- basics
     let _config = await useFetch(useRuntimeConfig().public.configAPI)
@@ -304,17 +305,14 @@
             {
                 src: u('static://public/js/vaptcha'),
                 body: true
-            },
-            {
-                src: u('node_modules://quill/js'),
-                body: true
             }
         ],
         titleTemplate: () => {
             let prefix = $t('page_title_prefix')
             try {
                 return prefix + ' | ' + $t(route.meta.titles[0][1])
-            } catch (ex) {
+            }
+            catch (ex) {
                 return prefix + ' | ' + '？'
             }
         },
@@ -375,7 +373,8 @@
                 tail_h = document.getElementById('tail').offsetHeight
             let _content_h = window_h - header_h - tail_h
             content_h.value = _content_h
-        } catch (ex) { }
+        }
+        catch (ex) { }
     }
     async function loopThread() {
         await (async () => {
