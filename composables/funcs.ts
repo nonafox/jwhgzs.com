@@ -265,8 +265,9 @@ export const runThread = async (func) => {
 export const getCookie = (name) => {
     return useCookie(name).value
 }
-export const setCookie = (name, value, out = false) => {
-    useCookie(name, out ? { path: '/' } : { domain: useState('config').value.JSCOOKIE_MAINDOMAIN, path: '/' }).value = value
+export const setCookie = (name, value, useless_out = undefined) => {
+    if (! process.client) return
+    useCookie(name, { domain: '.' + document.domain.match(/[^\.]+\.[^\.]+$/)[0], path: '/' }).value = value
 }
 export const random = (a, b) => {
     // 代码来源：https://www.runoob.com/w3cnote/js-random.html

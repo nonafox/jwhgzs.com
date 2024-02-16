@@ -1,7 +1,6 @@
 const api_base = 'https://api.jwhgzs.com'
 
 export default defineNuxtConfig({
-    // custom global components. origin: https://v3.nuxtjs.org/guide/directory-structure/components
     nitro: {
         preset: 'node-server'
     },

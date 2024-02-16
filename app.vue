@@ -114,7 +114,7 @@
                             <user-avatar :udata="udata"></user-avatar>
                             <span :class="{ nav_userinfo_name: true, authed_uname: (udata.userGroup || udata.userAuth) }">{{ udata.name }}</span>
                         </div>
-                        <div id="subnav" class="subnav">
+                        <div v-if="! noSubNav" id="subnav" class="subnav">
                             <el-breadcrumb class="nav_breadcrumb">
                                 <!-- 这里最后一项自动加的 css 是 elementplus 自己给的 -->
                                 <el-breadcrumb-item v-for="(v, k) in $route.meta.titles">
@@ -352,6 +352,9 @@
     })
     let isMainDomain = computed(() => {
         return ! route.meta.isntMainDomain
+    })
+    let noSubNav = computed(() => {
+        return route.meta.noSubNav
     })
     
     if (process.client)
