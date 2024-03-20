@@ -3,7 +3,7 @@
         margin-bottom: 15px;
         
         border: 1px solid #ddd;
-        border-radius: 6px;
+        border-radius: 10px;
         padding: 30px;
     }
     .topic_item_title {
@@ -22,12 +22,19 @@
         color: gray;
         font-size: 80%;
     }
+    .tip {
+        text-align: center;
+        color: gray;
+        font-weight: bold;
+        font-size: 120%;
+        padding: 20px;
+        border-top: 1px solid #ddd;
+    }
 </style>
 
 <template>
     <div class="box box_ml hcenter">
         <span class="box_title">{{ $t('page_title_forum') }}</span>
-        <el-divider></el-divider>
         <div class="group">
             <div class="group_btns">
                 <el-button type="primary" size="large" class="btns" @click="gotoNew" plain>
@@ -35,7 +42,6 @@
                 </el-button>
             </div>
         </div>
-        <el-divider></el-divider>
         <div style="margin-bottom: 15px;">
             <el-check-tag v-for="(v, k) in forumData.classifies" :key="k" class="btns2" :checked="classifyChecked == k" @change="classifyChanged(k)">
                 {{ $t(v) }}
@@ -58,6 +64,9 @@
                         </div>
                     </div>
                 </custom-a>
+            </div>
+            <div class="tip" v-if="! topicList.length">
+                {{ $t('no_contents') }}
             </div>
         </div>
     </div>

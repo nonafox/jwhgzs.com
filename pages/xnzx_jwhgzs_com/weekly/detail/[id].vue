@@ -93,17 +93,16 @@
     <div class="box box_ml hcenter">
         <span class="box_title">新宁空间</span>
         <span class="box_graytitle">班级周报 - 详情</span>
-        <el-divider></el-divider>
         <el-skeleton :loading="! weeklyDetail" :throttle="50" :rows="4" animated>
             <template #default>
                 <el-row>
-                    <el-tag :span="-1" :type="weeklyDetail.finished ? 'success' : 'info'">
+                    <el-tag :span="-1" :type="weeklyDetail.finished ? 'success' : 'info'" style="margin-bottom: 10px;">
                         {{ weeklyDetail.finished ? '已出版~' : '总编辑中（' + finishProgress(weeklyDetail) + '%）' }}
                     </el-tag>
-                    <el-tag v-if="parseInt(weeklyDetail.nameInvisible)" :span="-1" type="" style="margin-left: 10px;">
+                    <el-tag v-if="parseInt(weeklyDetail.nameInvisible)" :span="-1" type="" style="margin-left: 10px; margin-bottom: 10px;">
                         隐藏作者名
                     </el-tag>
-                    <div :span="-1" style="margin-left: 10px;">
+                    <div :span="-1" style="margin-left: 10px; margin-bottom: 10px;">
                         <span class="item_class">{{ weeklyDetail.year }}秋届</span>
                         <span class="item_class">{{ weeklyDetail.class }}班</span>
                         <span class="item_term">{{ weeklyDetail.term }} 第{{ weeklyDetail.num }}期 {{ weeklyDetail.note }}</span>

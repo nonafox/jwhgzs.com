@@ -1,3 +1,12 @@
+<style scoped>
+    .submit-box {
+        width: 100%;
+        text-align: center;
+        padding-top: 10px;
+        margin-bottom: 20px;
+    }
+</style>
+
 <template>
     <div class="box box_md hcenter">
         <span class="box_title">{{ $t('page_title_forum') }}</span>
@@ -5,14 +14,6 @@
             {{ (! formData.pid) ? $t('new_forum_topic') : (formData.id ? $t('edit_forum_topic') : $t('reply_forum_topic')) }}
         </span>
         <div style="margin-top: 40px;">
-            <div class="box_tip2">
-                <span v-if="isOK2save" class="spanAwesome" style="padding-bottom: 5px; padding-right: 5px;">
-                    {{ $t('forum_form_content_saved_tip') }}
-                </span>
-                <el-button size="small" plain @click="clear">
-                    {{ $t('clear_saved_content') }}
-                </el-button>
-            </div>
             <el-form label-width="8rem" :model="formData" label-position="top">
                 <el-form-item v-if="formData.pid && (! formData.id)" :label="$t('form_forum_topic_id_to_reply')" prop="pid">
                     <el-input type="number" v-model="formData.pid" disabled>
@@ -49,8 +50,15 @@
                         </quill-container>
                     </client-only>
                 </el-form-item>
-                <el-divider style="margin-top: 60px;"></el-divider>
-                <div style="width: 100%; text-align: center;">
+                <div class="box_tip2" v-if="isOK2save">
+                    <span class="spanAwesome" style="padding-bottom: 10px; padding-right: 10px;">
+                        {{ $t('forum_form_content_saved_tip') }}
+                    </span>
+                    <el-button size="small" plain @click="clear">
+                        {{ $t('clear_saved_content') }}
+                    </el-button>
+                </div>
+                <div class="submit-box">
                     <el-button type="primary" size="large" style="width: 50%;" @click="doit" plain round>
                         {{ $t('submit') }}
                     </el-button>

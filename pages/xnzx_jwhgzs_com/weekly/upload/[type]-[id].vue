@@ -4,7 +4,7 @@
         <span class="box_graytitle">
             班级周报 - {{ title }}
         </span>
-        <div style="margin-top: 40px;">
+        <div>
             <div v-if="type == 'upload'" class="box_tip2">
                 <span class="spanAwesome" style="padding-bottom: 5px;">提示：你输入的内容实时保存哦，不用担心！</span>
                 <el-button size="small" plain @click="clear">清空表单</el-button>

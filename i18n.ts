@@ -19,6 +19,7 @@ export default `
     吹水区:  | Chat
     新宁足球冠军联赛区:  | XFCL
     
+    no_contents: 暂无内容... | No contents yet...
     loading: 加载中 | Loading
     login: 登录 | Log in
     register: 注册 | Register
@@ -87,7 +88,7 @@ export default `
     question_confirm_to_delete: 确定要删除嘛？ | Confirm to delete?
     new_forum_topic: 发布帖子 | Post
     edit_forum_topic: 编辑帖子 | Post edit
-    forum_form_content_saved_tip: 你输入的内容实时保存哦！不用担心刷新页面之后没了~ | We always save your contents, dont't worry about them!
+    forum_form_content_saved_tip: 你输入的内容实时保存哦！不用担心刷新页面之后没了~ | We always save your contents, don't worry about them!
     submit: 提交 | Submit
     unimportant_error_tip: 此错误非致命，你可以继续进行操作哦！ | This is not a fatal error, your can continue!
     question_confirm_to_clear_saved_content: 确定要清空已保存的内容嘛？ | Are you sure to clean all saved contents?

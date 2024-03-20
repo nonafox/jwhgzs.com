@@ -44,6 +44,9 @@
         font-weight: bold;
         font-size: 135%;
     }
+    .tag {
+        padding: 16px !important;
+    }
 </style>
 
 <template>
@@ -100,7 +103,7 @@
         <!-- 以后记住了，除非不加:key有问题，就别加了 -->
         <div>
             <template v-for="(v, k) in peopleDetail.PA_properties">
-                <el-tag :type="getPropColor(v.type)" class="btns2" size="large"
+                <el-tag :type="getPropColor(v.type)" class="tag btns2" size="large"
                         :class="{ prop_stressed: v.type == - 1 }">
                     <strong class="people_property" v-html="v.name"></strong>
                     <div v-if="v.detail && v.detail.length && v.detail[0].length">

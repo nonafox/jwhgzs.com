@@ -1,19 +1,9 @@
 <style scoped>
-    .link {
-        width: 100%;
-        
-        border-radius: 6px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        padding: 0;
-        overflow: hidden;
-    }
 </style>
 
 <template>
     <div class="box box_md hcenter">
         <div class="box_title">新宁空间</div>
-        <el-divider></el-divider>
         <custom-a :href="u('local://xnzx/PA')">
             <img class="link" alt="新宁空间 纪念册banner" :src="u('static://public/img/link_xnzx_PA')"/>
         </custom-a>

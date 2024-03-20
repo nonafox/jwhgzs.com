@@ -1,13 +1,4 @@
 <style scoped>
-    .link {
-        width: 100%;
-        
-        border-radius: 6px;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        padding: 0;
-        overflow: hidden;
-    }
     .carouselA {
         display: inline-block;
     }

@@ -42,6 +42,9 @@
 .quill {
     height: 500px !important;
 }
+.quill_container {
+    border-bottom: 1px solid #ccc;
+}
 .quill_container_formstyle.quill_container {
     padding-top: 10px;
     margin-left: -35px !important;

@@ -51,14 +51,14 @@
                 </el-form-item>
             </div>
             <div class="box_tip">{{ $t('forget_password_tip') }}</div>
-            <div style="margin-top: 60px">
-                <el-button type="primary" :text="pageType != 0" size="large" round @click="doit(0, pageType == 0)">
+            <div style="margin-bottom: 20px;">
+                <el-button type="primary" :text="pageType != 0" size="large" @click="doit(0, pageType == 0)">
                     {{ pageType == 0 ? $t('login_now') : $t('login_by_password') }}
                 </el-button>
-                <el-button type="primary" :text="pageType != 1" size="large" round @click="doit(1, pageType == 1)">
+                <el-button type="primary" :text="pageType != 1" size="large" @click="doit(1, pageType == 1)">
                     {{ pageType == 1 ? $t('login_now') : $t('login_by_phone_number') }}
                 </el-button>
-                <el-button type="primary" :text="pageType != 2" size="large" round @click="doit(2, pageType == 2)">
+                <el-button type="primary" :text="pageType != 2" size="large" @click="doit(2, pageType == 2)">
                     {{ pageType == 2 ? $t('register_now') : $t('register') }}
                 </el-button>
             </div>

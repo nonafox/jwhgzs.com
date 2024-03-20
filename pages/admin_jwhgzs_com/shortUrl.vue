@@ -2,7 +2,6 @@
     <div class="box box_ml hcenter">
         <div class="box_title">后台管理</div>
         <div class="box_graytitle">短链接管理</div>
-        <el-divider></el-divider>
         <div class="group">
             <el-button type="primary" size="large" @click="add" plain>
                 <i class="fas fa-plus"></i>&emsp;新建短链

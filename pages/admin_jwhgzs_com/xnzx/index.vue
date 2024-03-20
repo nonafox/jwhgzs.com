@@ -2,7 +2,6 @@
     <div class="box box_ml hcenter">
         <div class="box_title">后台管理</div>
         <div class="box_graytitle">新宁空间管理 - 主页</div>
-        <el-divider></el-divider>
         <div class="group">
             <el-button type="primary" size="large" @click="addClass" plain>
                 <i class="fas fa-plus"></i>&emsp;添加班级

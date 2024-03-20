@@ -1,9 +1,9 @@
 <style scoped>
     .item {
-        margin-bottom: 10px;
+        margin-bottom: 20px;
         
         border: 1px solid #ddd;
-        border-radius: 6px;
+        border-radius: 10px;
         padding: 20px;
     }
     .item_class {
@@ -27,7 +27,7 @@
     <div class="box box_md hcenter">
         <span class="box_title">新宁空间</span>
         <span class="box_graytitle">班级周报</span>
-        <div class="group" style="margin-top: 40px;">
+        <div class="group">
             <div class="group_btns">
                 <el-button class="btns" type="primary" size="large" @click="goto(0)" plain>
                     <i class="fas fa-upload"></i>&emsp;上传文章
@@ -46,10 +46,10 @@
                 <div v-for="(v, k) in weeklyList" :key="v.id" class="item">
                     <custom-a class="aAwesomeX" :href="u('local://xnzx/weekly/detail') + '/' + v.id">
                         <el-row>
-                            <el-tag :span="-1" :type="v.finished ? 'success' : 'info'">
+                            <el-tag :span="-1" :type="v.finished ? 'success' : 'info'" style="margin-bottom: 10px;">
                                 {{ v.finished ? '已出版~' : '总编辑中（' + finishProgress(v) + '%）' }}
                             </el-tag>
-                            <div :span="-1" style="margin-left: 10px;">
+                            <div :span="-1" style="margin-left: 10px; margin-bottom: 10px;">
                                 <span class="item_class">{{ v.year }}秋届</span>
                                 <span class="item_class">{{ v.class }}班</span>
                                 <span class="item_term">{{ v.term }} 第{{ v.num }}期 {{ v.note }}</span>

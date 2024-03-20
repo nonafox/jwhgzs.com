@@ -11,7 +11,6 @@
     <div class="box box_ml hcenter">
         <div class="box_title">后台管理</div>
         <div class="box_graytitle">新宁空间管理 - 详情</div>
-        <el-divider></el-divider>
         <div class="title">{{ year }} 秋届 {{ class_ }} 班</div>
         <div class="group">
             <el-button type="primary" size="large" @click="addStudent" plain>

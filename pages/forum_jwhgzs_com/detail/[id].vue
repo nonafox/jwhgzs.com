@@ -3,7 +3,7 @@
         margin-bottom: 15px;
         
         border: 1px solid #ddd;
-        border-radius: 6px;
+        border-radius: 10px;
         padding: 20px;
     }
     .topic_item_nonreply {
@@ -40,6 +40,7 @@
         border-left: none;
         border-top: none;
         margin: 1px;
+        border-top-left-radius: 10px !important;
     }
 </style>
 
@@ -47,15 +48,13 @@
     <div class="box box_ml hcenter">
         <span class="box_title">{{ $t('page_title_forum') }}</span>
         <span class="box_graytitle">{{ $t('page_title_forum_topic_detail') }}</span>
-        <el-divider></el-divider>
+        <div class="topic_item_title">{{ topicTree[0].title }}</div>
         <div class="group">
             <el-button type="primary" size="large" @click="gotoReply" plain>
                 <i class="fas fa-comments"></i>&emsp;{{ $t('reply_forum_topic') }}
             </el-button>
         </div>
-        <el-divider></el-divider>
         <div v-if="topicTree && topicTree[0]">
-            <div class="topic_item_title">{{ topicTree[0].title }}</div>
             <div>
                 <div v-for="(v, k) in topicTree" :key="v.id">
                     <el-tag size="small" :type="k == 0 ? 'success' : ''" class="topic_item_id">#{{ v._id }}</el-tag>

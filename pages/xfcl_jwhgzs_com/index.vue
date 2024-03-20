@@ -29,7 +29,6 @@
     <div class="box box_ml hcenter">
         <el-image :src="u('static://public/img/xfcl_banner')"></el-image>
         <span class="box_title">主页</span>
-        <el-divider></el-divider>
         <div class="group">
             <el-button v-if="isAdmin" type="primary" size="large" @click="add" plain>
                 <i class="fas fa-plus"></i>&emsp;新建赛程

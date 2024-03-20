@@ -26,7 +26,6 @@
         margin: 10px;
         padding: 10px;
         text-align: center;
-        border-top: 1px solid #ddd;
     }
     .describe {
         padding: 15px;
