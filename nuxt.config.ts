@@ -18,7 +18,7 @@ export default defineNuxtConfig({
             UserAgent: '*',
             Disallow: '/',
             BlankLine: true,
-            Sitemap: `${api_base}/sitemap`
+            Sitemap: `${api_base}/sitemap.xml`
         }
     },
     components: {
