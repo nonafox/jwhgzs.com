@@ -6,14 +6,14 @@
         <el-form :model="formData" :rules="formVerify" label-position="top">
             <div v-if="pageType != 1">
                 <el-form-item :label="$t('form_username')" prop="name">
-                    <el-input type="text" v-model="formData.name">
+                    <el-input size="large" type="text" v-model="formData.name">
                         <template #prefix>
                             <i class="fas fa-user"></i>
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="$t('form_password')" prop="pass">
-                    <el-input type="password" :show-password="true" v-model="formData.pass">
+                    <el-input size="large" type="password" :show-password="true" v-model="formData.pass">
                         <template #prefix>
                             <i class="fas fa-key"></i>
                         </template>
@@ -22,7 +22,7 @@
             </div>
             <div v-if="pageType == 2">
                 <el-form-item :label="$t('form_password_repeat')" prop="pass2">
-                    <el-input type="password" :show-password="true" v-model="formData.pass2">
+                    <el-input size="large" type="password" :show-password="true" v-model="formData.pass2">
                         <template #prefix>
                             <i class="fas fa-key"></i>
                         </template>
@@ -31,19 +31,19 @@
             </div>
             <div v-if="pageType == 1 || pageType == 2">
                 <el-form-item :label="$t('form_phone_number')" prop="phone">
-                    <el-input type="number" style="margin-top: 5px; margin-bottom: 5px;" v-model="formData.phone">
+                    <el-input size="large" type="number" style="margin-top: 5px; margin-bottom: 5px;" v-model="formData.phone">
                         <template #prefix>
                             <i class="fas fa-phone"></i>
                         </template>
                     </el-input>
                 </el-form-item>
                 <el-form-item :label="$t('form_phone_verify_code')" prop="phoneVerify">
-                    <el-input type="number" v-model="formData.phoneVerify">
+                    <el-input size="large" type="number" v-model="formData.phoneVerify">
                         <template #prefix>
                             <i class="fas fa-ticket-alt"></i>
                         </template>
                         <template #append>
-                            <el-button text bg style="font-size: 80%" @click="sendPhoneVerify">
+                            <el-button style="font-size: 90%" @click="sendPhoneVerify">
                                 {{ $t('send') }}
                             </el-button>
                         </template>

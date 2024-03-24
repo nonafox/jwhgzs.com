@@ -215,7 +215,7 @@ export const p = (opts) => {
         try {
             if (client) {
                 let xhr = new XMLHttpRequest()
-                // if we get 0 / 0, it's OK. because 0 / 0 = NaN ≈ 0
+                // if we get 0 / 0, it'll be OK. because 0 / 0 = NaN ≈ 0
                 xhr.upload.onprogress = (evt) => 
                     editLoadingMsg_percent(lmsgID, Math.round(evt.loaded / evt.total * 100))
                 xhr.onload = () => {
