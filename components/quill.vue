@@ -28,12 +28,7 @@
                         ['link', 'image'],
                         
                         ['clean']
-                    ],
-                    handlers: {
-                        mylink() {
-                            quill.insertEmbed()
-                        }
-                    }
+                    ]
                 }
             },
             theme: 'snow'
