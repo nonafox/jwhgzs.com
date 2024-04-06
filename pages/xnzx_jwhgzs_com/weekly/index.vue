@@ -118,27 +118,6 @@
             errMsg('在微信、QQ内置浏览框无法下载文件哦，请用浏览器打开本网站~')
             return
         }
-        // inputMsg({
-        //     content: '请输入你的届数（即你入学的年份）：',
-        //     inputType: 'number',
-        //     callback_ok(year) {
-        //         inputMsg({
-        //             content: '请输入你的班级：',
-        //             inputType: 'number',
-        //             callback_ok(class_) {
-        //                 inputMsg({
-        //                     content: '请输入你的学号：',
-        //                     inputType: 'number',
-        //                     callback_ok(cid) {
-                                // vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
-                                //     j(u('local://api/xnzx/weekly/download') + '?year=' + year + '&class=' + class_ + '&cid=' + cid + '&userToken=' + getCookie('userToken') + '&vaptchaData=' + encodeURIComponent(JSON.stringify(vaptchaData.vaptchaData)), '_blank')
-                                // })
-        //                     }
-        //                 })
-        //             }
-        //         })
-        //     }
-        // })
         const c0 = weeklyData.value.classes, s0 = weeklyData.value.students
         const classes = [], students = []
         for (let i in c0) {

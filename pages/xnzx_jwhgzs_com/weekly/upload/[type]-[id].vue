@@ -120,7 +120,7 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="学期" prop="term">
-                        <el-select v-model="formData.term" placeholder=" 点击选择学期" @change="resetPeople(1)">
+                        <el-select v-model="formData.term" placeholder=" 点击选择学期">
                             <template #prefix>
                                 <i class="fas fa-calendar-week"></i>
                             </template>
