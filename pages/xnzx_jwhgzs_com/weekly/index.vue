@@ -118,22 +118,53 @@
             errMsg('在微信、QQ内置浏览框无法下载文件哦，请用浏览器打开本网站~')
             return
         }
+        // inputMsg({
+        //     content: '请输入你的届数（即你入学的年份）：',
+        //     inputType: 'number',
+        //     callback_ok(year) {
+        //         inputMsg({
+        //             content: '请输入你的班级：',
+        //             inputType: 'number',
+        //             callback_ok(class_) {
+        //                 inputMsg({
+        //                     content: '请输入你的学号：',
+        //                     inputType: 'number',
+        //                     callback_ok(cid) {
+                                // vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
+                                //     j(u('local://api/xnzx/weekly/download') + '?year=' + year + '&class=' + class_ + '&cid=' + cid + '&userToken=' + getCookie('userToken') + '&vaptchaData=' + encodeURIComponent(JSON.stringify(vaptchaData.vaptchaData)), '_blank')
+                                // })
+        //                     }
+        //                 })
+        //             }
+        //         })
+        //     }
+        // })
+        const c0 = weeklyData.value.classes, s0 = weeklyData.value.students
+        const classes = [], students = []
+        for (let i in c0) {
+            for (let j in c0[i]) {
+                classes.push({ label: i + '秋届' + c0[i][j] + '班', value: i + '_' + c0[i][j] })
+            }
+        }
         inputMsg({
-            content: '请输入你的届数（即你入学的年份）：',
-            inputType: 'number',
-            callback_ok(year) {
+            content: '请选择你的班级：',
+            inputType: 'select',
+            inputOptions: classes,
+            callback_ok(year_class) {
+                let [year, class_] = year_class.split('_')
+                let s1 = s0[year][class_]
+                
+                for (let i in s1) {
+                    students.push({ label: s1[i][0] + '号 ' + s1[i][1], value: s1[i][0] })
+                }
+                
                 inputMsg({
-                    content: '请输入你的班级：',
-                    inputType: 'number',
-                    callback_ok(class_) {
-                        inputMsg({
-                            content: '请输入你的学号：',
-                            inputType: 'number',
-                            callback_ok(cid) {
-                                vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
-                                    j(u('local://api/xnzx/weekly/download') + '?year=' + year + '&class=' + class_ + '&cid=' + cid + '&userToken=' + getCookie('userToken') + '&vaptchaData=' + encodeURIComponent(JSON.stringify(vaptchaData.vaptchaData)), '_blank')
-                                })
-                            }
+                    content: '请选择你：',
+                    inputType: 'select',
+                    inputOptions: students,
+                    callback_ok(sid) {
+                        vaptchaGo(config.value.VAPTCHA_CONFIG.scenes.important, (vaptchaData) => {
+                            j(u('local://api/xnzx/weekly/download') + '?year=' + year + '&class=' + class_ + '&sid=' + sid + '&userToken=' + getCookie('userToken') + '&vaptchaData=' + encodeURIComponent(JSON.stringify(vaptchaData.vaptchaData)), '_blank')
                         })
                     }
                 })

@@ -120,11 +120,14 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="学期" prop="term">
-                        <el-input type="text" v-model="formData.term">
+                        <el-select v-model="formData.term" placeholder=" 点击选择学期" @change="resetPeople(1)">
                             <template #prefix>
                                 <i class="fas fa-calendar-week"></i>
                             </template>
-                        </el-input>
+                            <template v-for="(v, k) in config.XNZX_WEEKLY_CONFIG.terms" :key="k">
+                                <el-option :label="v" :value="v"></el-option>
+                            </template>
+                        </el-select>
                     </el-form-item>
                     <el-form-item label="期数" prop="num">
                         <el-input type="number" v-model="formData.num">
@@ -133,7 +136,7 @@
                             </template>
                         </el-input>
                     </el-form-item>
-                    <el-form-item label="备注" prop="note">
+                    <el-form-item label="备注（选填）" prop="note">
                         <el-input type="text" v-model="formData.note">
                             <template #prefix>
                                 <i class="fas fa-sticky-note"></i>
