@@ -69,17 +69,4 @@
         bgImg: 'static://public/img/bkg2',
         isntMainDomain: true
     })
-    
-    let tag = getRouteParam('tag')
-    if (process.client && tag) {
-        p({
-            name: $t('api_jump_shorturl'),
-            url: u('local://api/shortUrl'),
-            data: { tag: tag },
-            on_ok(data) {
-                j(data.data.url)
-            },
-            type: 'money'
-        })
-    }
 </script>
