@@ -63,7 +63,7 @@
 <script setup>
     definePageMeta({
         titles: [
-            ['shortUrl://', 'page_title_shorturl'],
+            ['shortUrlPortal://', 'page_title_shorturl'],
             ['', 'page_title_home']
         ],
         bgImg: 'static://public/img/bkg2',
