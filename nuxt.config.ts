@@ -16,7 +16,7 @@ export default defineNuxtConfig({
     robots: {
         rules: {
             UserAgent: '*',
-            Disallow: '/',
+            Disallow: '',
             BlankLine: true,
             Sitemap: `${api_base}/sitemap.xml`
         }
