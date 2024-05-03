@@ -18,7 +18,7 @@ export default defineNuxtConfig({
             UserAgent: '*',
             Disallow: '',
             BlankLine: true,
-            Sitemap: `${api_base}/sitemap.xml`
+            Sitemap: (req) => `${api_base}/sitemap/` + req.headers.host.replaceAll('.', '_')
         }
     },
     components: {
