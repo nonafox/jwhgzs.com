@@ -1,4 +1,4 @@
-const api_base = 'https://api.jwhgzs.com'
+import config from './config.ts'
 
 export default defineNuxtConfig({
     nitro: {
@@ -8,18 +8,10 @@ export default defineNuxtConfig({
         '@element-plus/nuxt',
         '@nuxtjs/i18n',
         '@vueuse/nuxt',
-        '@nuxtjs/robots'
+        ['@nuxtjs/robots', { configPath: './robots.config.ts' }]
     ],
     i18n: {
         vueI18n: './i18n.config.ts'
-    },
-    robots: {
-        rules: {
-            UserAgent: '*',
-            Disallow: '',
-            BlankLine: true,
-            Sitemap: (req) => `${api_base}/sitemap/` + req.headers.host.replaceAll('.', '_')
-        }
     },
     components: {
         global: true,
@@ -27,7 +19,7 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         'public': {
-            configAPI: api_base
+            configAPI: config.api_base
         }
     },
     css: [
