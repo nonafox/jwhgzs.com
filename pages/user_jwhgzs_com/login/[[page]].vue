@@ -245,14 +245,14 @@
         }
     }
     
-    switch (getRouteParam('page')) {
+    switch (getRouteParam('page').toLowerCase()) {
         case null:
         case '':
             pageType.value = 0
             pageTitle.value = '登录'
             grayTitle.value = 'LOGIN'
             break
-        case 'phoneLogin':
+        case 'phonelogin':
             pageType.value = 1
             pageTitle.value = '登录'
             grayTitle.value = 'LOGIN'

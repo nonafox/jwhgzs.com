@@ -82,7 +82,7 @@ export const j = (url = null, target = '', retainUrlParams = false) => {
         if (url.indexOf('?') >= 0)
             url += '&' + query
         else
-            url += '?' + query
+            url += query
     }
     let { type: jumpType, flag, route: dest } = urlp = parseUrl(url)
     
