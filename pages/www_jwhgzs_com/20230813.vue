@@ -22,7 +22,7 @@
     })
     
     // -- refs
-    let btnText = ref('傻逼子健赶紧点这里上传'),
+    let btnText = ref(/*'傻逼子健' +*/ '赶紧点这里上传'),
         fileList = ref([])
     
     // -- app
