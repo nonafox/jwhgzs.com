@@ -1,4 +1,4 @@
-import config from './config.ts'
+import config from './config.js'
 
 export default defineNuxtConfig({
     nitro: {
@@ -25,6 +25,7 @@ export default defineNuxtConfig({
     css: [
         '@fortawesome/fontawesome-free/css/all.css',
         'element-plus/dist/index.css',
+        'quill-jwhgzs-edited/dist/quill.snow.css',
         '/public/style.css',
         '/public/quill.css'
     ]

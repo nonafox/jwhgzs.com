@@ -331,10 +331,6 @@
                 rel: 'icon',
                 type: 'image/x-icon',
                 href: u('static://public/img/logo_ico')
-            },
-            {
-                rel: 'stylesheet',
-                href: u('node_modules://quill/css')
             }
         ]
     })
