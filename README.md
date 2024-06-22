@@ -5,5 +5,4 @@ Not specified at all. For that maybe we will update the repository once in a whi
 # Configure notice
 
 - usually be deployed on bt-panel
-- MUST runs on root user
 - defaultly runs on port `3001`
