@@ -180,7 +180,7 @@
         data: {},
         on_ok(data) {
             forumData.value = data.data.forumData
-            if (process.client && ! inited)
+            if (import.meta.client && ! inited)
                 init()
         },
         jump_err: () => j(u('local://forum')),

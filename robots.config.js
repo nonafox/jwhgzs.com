@@ -1,4 +1,4 @@
-import config from './config.ts'
+import config from './config'
 
 const getHost = (host) => host.split(':')[0]
 

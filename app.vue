@@ -52,6 +52,7 @@
         position: fixed !important;
         top: 55px;
         right: 0;
+        height: 34px;
         border-bottom: none !important;
     }
     .nav_a {
@@ -273,7 +274,7 @@
 
 <script>
     /* loading思路来源：https://segmentfault.com/a/1190000042078966 */
-    if (process.client) {
+    if (import.meta.client) {
         document.onreadystatechange = () => {
             if (document.readyState == 'complete') {
                 setTimeout(() => {
@@ -288,7 +289,7 @@
 <script setup>
     /* learn to write English comments now !!! */
     import zhCn from 'element-plus/dist/locale/zh-cn.mjs'
-    if (process.client) globalThis.Quill = (await import('quill-jwhgzs-edited/dist/quill.min.js')).default
+    if (import.meta.client) globalThis.Quill = (await import('quill-jwhgzs-edited/dist/quill.min.js')).default
     
     // -- basics
     let _config = await useFetch(useRuntimeConfig().public.configAPI)
@@ -353,7 +354,7 @@
         return route.meta.noSubNav
     })
     
-    if (process.client)
+    if (import.meta.client)
         loading.value = false
     
     // vars which only used here
@@ -393,7 +394,7 @@
             })
         })()
         
-        if (process.client)
+        if (import.meta.client)
             setTimeout(loopThread, config.value.JSTHREAD_INTERVAL)
     }
     function changeLocale() {
@@ -401,7 +402,7 @@
         j()
     }
     
-    if (process.client) {
+    if (import.meta.client) {
         // auto adaption
         window.onresize = autoAdapt
         onMounted(autoAdapt)

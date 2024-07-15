@@ -44,7 +44,7 @@ export const parseUrl = (url) => {
        when you console.log(urlp.type, urlp.flag, urlp.route, ...) itll be all undefined !!
        ill call GOOGLE SON OF B**CH for wasting my 3 hours just for a unimportant 'error'
        */
-    const client = process.client
+    const client = import.meta.client
     // URL()'s param #2: baseUrl
     let urlp = new URL(url, client ? document.location.href : 'https://localhost/'), urlp2, fullPath
     if (client && urlp.origin == document.location.origin) {
@@ -69,7 +69,7 @@ export const parseUrl = (url) => {
     return urlp
 }
 export const j = (url = null, target = '', retainUrlParams = false) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     const route = useRoute(),
           router = useRouter()
@@ -106,7 +106,7 @@ globalThis.quillJump = (url) => {
         j(u(url), '_blank')
 }
 export const j_hash = async () => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     const route = useRoute()
     if (route.hash) {
@@ -131,7 +131,7 @@ export const p = (opts) => {
             on_ok = () => {}, on_err = () => {},
             jump = () => {}, jump_err = () => {}
         } = opts
-        let client = process.client, lmsgID
+        let client = import.meta.client, lmsgID
         if (client && type != 'loop') {
             lmsgID = loadingMsg(
                 `
@@ -253,7 +253,7 @@ export const runThread = async (func) => {
     let ourl = useRoute().fullPath
     let loop = () => {
         setTimeout(async () => {
-            if (process.client && ourl == useRoute().fullPath) {
+            if (import.meta.client && ourl == useRoute().fullPath) {
                 await func()
                 loop()
             }
@@ -266,7 +266,7 @@ export const getCookie = (name) => {
     return useCookie(name).value
 }
 export const setCookie = (name, value, useless_out = undefined) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     useCookie(name, { domain: '.' + document.domain.match(/[^\.]+\.[^\.]+$/)[0], path: '/' }).value = value
 }
 export const random = (a, b) => {
@@ -295,7 +295,7 @@ export const getRouteParam = (name) => {
     return useRoute().params[name]
 }
 export const copyIt = (data) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     // 复制参考：https://www.jianshu.com/p/d6d25bd73e2f
     let aux = document.createElement('input')
@@ -308,7 +308,7 @@ export const copyIt = (data) => {
 }
 globalThis.copyIt = copyIt
 export const copy = (text) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     copyIt(text)
     succMsg($t('copy_finished'))
@@ -394,7 +394,7 @@ export const inArray = (item, arr) => {
     return arr ? arr.indexOf(item) > -1 : false
 }
 export const isWechatOrQQ = () => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     /* 判断是否微信、QQ内置浏览器。代码来源：https://www.cnblogs.com/love314159/p/10790533.html */
     let ua = navigator.userAgent.toLowerCase()
@@ -409,7 +409,7 @@ export const isNum = (i) => {
     return i !== null && i !== undefined && Number(i) + 1 && i !== ''
 }
 export const infoMsg = (content, callback) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     return useState('dialogs').value.push({
         status: true,
         _status: true,
@@ -423,7 +423,7 @@ export const infoMsg = (content, callback) => {
     }) - 1
 }
 export const succMsg = (content, callback) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     return useState('dialogs').value.push({
         status: true,
         _status: true,
@@ -437,7 +437,7 @@ export const succMsg = (content, callback) => {
     }) - 1
 }
 export const warnMsg = (content, callback) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     return useState('dialogs').value.push({
         status: true,
         _status: true,
@@ -451,7 +451,7 @@ export const warnMsg = (content, callback) => {
     }) - 1
 }
 export const errMsg = (content, callback) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     return useState('dialogs').value.push({
         status: true,
         _status: true,
@@ -465,7 +465,7 @@ export const errMsg = (content, callback) => {
     }) - 1
 }
 export const confMsg = (json) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     // 'json' like: { content, type, callback_ok, callback_cancel, canClose = true }
     if (! json.canClose && json.canClose !== false) json.canClose = true
     return useState('dialogs').value.push({
@@ -481,7 +481,7 @@ export const confMsg = (json) => {
     }) - 1
 }
 export const inputMsg = (json) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     // 'json' like: { content, inputType, callback_ok, callback_cancel, canClose = true, defaultValue = null, inputOptions = null }
     if (! json.canClose && json.canClose !== false) json.canClose = true
     return useState('dialogs').value.push({
@@ -504,7 +504,7 @@ export const inputMsg = (json) => {
     }) - 1
 }
 export const formMsg = (json) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     // 'json' like: { content, callback_ok, callback_cancel, canClose = true, form: ... }
     // 'form' like: [{ content, inputType, defaultValue = null, inputOptions = null }, ...]
     if (! json.canClose && json.canClose !== false) json.canClose = true
@@ -531,7 +531,7 @@ export const formMsg = (json) => {
     }) - 1
 }
 export const loadingMsg = (content, defaultPercent = 0) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     return useState('dialogs').value.push({
         status: true,
         _status: true,
@@ -550,7 +550,7 @@ export const loadingMsg = (content, defaultPercent = 0) => {
     }) - 1
 }
 export const closeMsg = (id, type) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     let dialog = useState('dialogs').value[id]
     let values = []
     if (dialog.form) {
@@ -569,19 +569,19 @@ export const closeMsg = (id, type) => {
     dialog.status = false
 }
 export const closeLoadingMsg = (id) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     try { useState('dialogs').value[id].status = false } catch (ex) {}
 }
 export const editLoadingMsg_title = (id, title) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     try { useState('dialogs').value[id].title = title } catch (ex) {}
 }
 export const editLoadingMsg_percent = (id, percent) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     try { useState('dialogs').value[id].form[0].value = Number(percent.toFixed(0)) } catch (ex) {}
 }
 export const selectFile = (callback) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     let input = document.getElementById('fileUploader')
     input.click()
@@ -598,7 +598,7 @@ export const selectFile = (callback) => {
     }
 }
 export const vaptchaGo = (scene, callback_ok, callback_close, callback_loaded) => {
-    if (! process.client) return
+    if (! import.meta.client) return
     if (! useState('config').value.VAPTCHA_CONFIG.status) {
         callback_ok({ vaptchaData: {} })
         return
@@ -637,11 +637,11 @@ export const vaptchaGo = (scene, callback_ok, callback_close, callback_loaded) =
     })
 }
 export const jumpReload = () => {
-    if (! process.client) return
+    if (! import.meta.client) return
     else j()
 }
 export const jumpLogin = () => {
-    if (! process.client) return
+    if (! import.meta.client) return
     
     j(u('local://user/login') + '?from=' + encodeURIComponent(document.location.href) + (useRoute().meta.isntMainDomain ? '&out=1' : ''))
 }

@@ -265,7 +265,7 @@
         })
     }
     
-    if (process.client) {
+    if (import.meta.client) {
         await runThread(async () => await p({
             name: $t('api_sync_data'),
             url: u('local://api/user/data'),

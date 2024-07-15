@@ -1,4 +1,4 @@
-import config from './config.js'
+import config from './config'
 
 export default defineNuxtConfig({
     nitro: {
@@ -8,10 +8,10 @@ export default defineNuxtConfig({
         '@element-plus/nuxt',
         '@nuxtjs/i18n',
         '@vueuse/nuxt',
-        ['@nuxtjs/robots', { configPath: './robots.config.ts' }]
+        ['@nuxtjs/robots', { configPath: './robots.config' }]
     ],
     i18n: {
-        vueI18n: './i18n.config.ts'
+        vueI18n: './i18n.config'
     },
     components: {
         global: true,

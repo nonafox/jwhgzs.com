@@ -1,4 +1,4 @@
-import i18n from './i18n.ts'
+import i18n from './i18n'
 
 const resolveI18n = () => {
     let arr = i18n.split('\n'), res = { cn: { ' ': '' }, en: { ' ': ' ' } }

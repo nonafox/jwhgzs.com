@@ -41,7 +41,7 @@
         })
     })
     watch(() => props.modelValue, () => {
-        if (! process.client) return
+        if (! import.meta.client) return
         
         // 防止不是用户输入改变quill本身内容触发（自建的v-model导致）的，否则会导致用户输入不了
         let ncontent = quill_dom.innerHTML

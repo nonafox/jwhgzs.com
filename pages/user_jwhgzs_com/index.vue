@@ -6,7 +6,7 @@
         ]
     })
     
-    if (process.client) {
+    if (import.meta.client) {
         if (getCookie('userToken')) {
             j(u('local://user/ucenter'))
         } else {
