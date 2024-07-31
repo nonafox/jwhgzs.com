@@ -47,6 +47,9 @@
         <custom-a :href="u('shortUrl://')">
             <img class="link" alt="短链接 banner" :src="u('static://public/img/link_shortUrl')"/>
         </custom-a>
+        <custom-a :href="u('tzy://')">
+            <img class="link" alt="谭镇洋 banner" :src="u('static://public/img/link_tzy')"/>
+        </custom-a>
     </div>
 </template>
 

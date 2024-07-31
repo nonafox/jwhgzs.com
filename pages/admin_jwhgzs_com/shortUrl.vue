@@ -18,7 +18,7 @@
             </el-table-column>
             <el-table-column prop="url" label="原链接" width="150">
                 <template #default="scope">
-                    <el-button size="small" text @click="j(scope.row.url, '_blank')">跳转</el-button>
+                    <el-button size="small" text @click="j(scope.row.resolved_url, '_blank')">跳转</el-button>
                     <el-button size="small" text @click="copy(scope.row.resolved_url)">复制</el-button>
                     <el-button v-if="scope.row.resolved" size="small" text @click="copy(scope.row.url)">复制九尾狐内部链接</el-button>
                 </template>
