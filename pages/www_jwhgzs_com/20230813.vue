@@ -1,13 +1,27 @@
 <style scoped>
+    .item {
+        display: block;
+        margin-bottom: 20px;
+    }
+    .item .time {
+        font-size: 80%;
+    }
+    .item .name {
+        width: 100%;
+        text-align: center;
+    }
 </style>
 
 <template>
     <div class="box box_md hcenter">
-        <div class="box_title">临时页 - 2023/8/13</div>
+        <div class="box_title">临时上传页 - 2023/8/13</div>
         <el-divider></el-divider>
         <el-button size="large" type="primary" plain @click="upload">{{ btnText }}</el-button>
         <el-divider>已上传文件列表：</el-divider>
-        <li v-for="v in fileList">{{ v.name }}</li>
+        <div v-for="v in fileList" class="item">
+            <div class="time">{{ getTimeDesc(v.time) }}</div>
+            <el-link class="name" :href="v.url" target="__blank">{{ v.name }}</el-link>
+        </div>
     </div>
 </template>
 
