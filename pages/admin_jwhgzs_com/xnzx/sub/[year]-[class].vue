@@ -16,6 +16,9 @@
             <el-button type="primary" size="large" @click="addStudent" plain>
                 <i class="fas fa-plus"></i>&emsp;添加学生
             </el-button>
+            <el-button type="primary" size="large" @click="addStudentEfficiently" plain>
+                <i class="fas fa-plus"></i>&emsp;快捷添加学生
+            </el-button>
         </div>
         <el-table :data="studentList" max-height="500">
             <el-table-column prop="sid" label="学号" width="80"></el-table-column>
@@ -98,6 +101,22 @@
                 p({
                     name: '添加学生',
                     url: u('local://api/admin/xnzx/addStudent'),
+                    data: Object.assign({ year: year.value, 'class': class_.value }, v)
+                })
+            }
+        })
+    }
+    function addStudentEfficiently() {
+        torture({
+            list: [{
+                name: '每行一个同学的信息。每行的格式为：<br/>【姓名】 【性别】<br/>中间用空格分开，如<br/><br/><span style="color: gray;">李华 女<br/>张三 男<br/>王五 女</span><br/><br/>注意按学号排序哦',
+                vname: 'list',
+                type: 'textarea'
+            }],
+            next(v) {
+                p({
+                    name: '添加学生',
+                    url: u('local://api/admin/xnzx/addStudentEfficiently'),
                     data: Object.assign({ year: year.value, 'class': class_.value }, v)
                 })
             }
