@@ -591,7 +591,7 @@ export const selectFile = (callback) => {
         input.value = ''
         let sizeLimit = useState('config').value.UPLOAD_SIZELIMIT
         if (data.size > sizeLimit) {
-            errMsg($t('file_upload_size_limit_tip', { size: sizeDesc(sizeLimit) }))
+            errMsg($t('file_upload_size_limit_tip_', { size: sizeDesc(sizeLimit) }))
             return
         }
         if (callback) callback(data)
